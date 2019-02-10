@@ -16,78 +16,77 @@ import renderIf from 'render-if';
 
 //API set up and variables
 type Props = {};
-const GEOLOCATION_SETTINGS = { enableHighAccuracy: true,
-                              distanceFilter: 1,
-                              maximumAge: 1000 };
+//API Key for the google maps API
 const GOOGLE_MAPS_APIKEY = 'AIzaSyCSFIWbcI5EGJtJSrFXh-4WfrtgzdICDFg';
-const border = [];
+//Variable keeps track if the walk has started
 var started = false;
-var patharray = [];
+//Holds the generated walking path so we can verify that a user is following the path
+var directionArrayay = [];
+//Keeps track of when Delta/Zoom needs to change
+var changeDelta = false;
+
+
 export default class App extends Component<Props> {
 
 constructor(props){
   super(props);
   //Setting initial variables
   this.state = {
-    directionPosition: null,
-    started:false,
-    toggle:false,
-    initialPosition: {
-      latitude: 0,
-      longitude:0,
-      latitudeDelta:.6,
-      longitudeDelta: .6,
-    },
-    markerPosition: {
+    //The coordinates of where your direction path starts, changes until with you location until you click start
+    directionPos: {latitude: 0, longitude:0},
+    //Text for the search bar
+    text: 'Enter Destination',
+    //Array of points of the walking path to be passed to the check function
+    directionArray:[],
+    //The coordinate of your destination
+    destinationPos:{latitude: 0, longitude:0},
+    //The region of the map that should be focused on
+    Region: null,
+    //The position of the user
+    userPosition: {
       latitude:0,
       longitude:0,
     },
-    text: 'Enter Destination',
-                desc:'oh no',
-                patharr:null,
-                borderarr:[],
-                started:false,
-                loc:{latitude: 41.912912, longitude: -87.649223},};
+  };
 }
-
 
 watchID = null
 
-menuPress(tog){
-  this.setState({toggle:!tog})
-}
-
 //Getting Initial Location
 componentDidMount(){
+  //Requesting user authorization of location
   navigator.geolocation.requestAuthorization();
+  //Getting the initial position
   navigator.geolocation.getCurrentPosition((position) => {
-
-      var lat = position.coords.latitude
-      var long = position.coords.longitude
-      var lastRegion = {
-        latitude: lat,
-        longitude: long,
-        latitudeDelta: .6,
-        longitudeDelta: .6
-      }
-      this.setState({initialPosition: lastRegion, directionPosition:{latitude: lat, longitude:long}})
-    })
-  this.watchID = navigator.geolocation.watchPosition((position) => {
+    //User current location
     var lat = position.coords.latitude
     var long = position.coords.longitude
-    var latdelta
-    var londelta
+    //Updated region
+    var lastRegion = {
+      latitude: lat,
+      longitude: long,
+      latitudeDelta: .007,
+      longitudeDelta: .007,
+    }
+    //updating the user position and region
+    this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
+  });
+  //Updating user position as they move
+  this.watchID = navigator.geolocation.watchPosition((position) => {
+    //User current location
+    var lat = position.coords.latitude
+    var long = position.coords.longitude
     var inpath = false;
     var newpos = {
       latitude: lat,
       longitude: long,
     }
 
-    this.setState({markerPosition: newpos})
+    this.setState({userPosition: newpos})
 
     if(started==true){
-      for(var i=0; i<patharray.length; i++){
-        if(Math.sqrt(Math.pow((patharray[i].latitude-lat),2)+Math.pow((patharray[i].longitude-long),2))<.0005){
+      for(var i=0; i<pathArray.length; i++){
+        if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0005){
           inpath = true;
         }}
         if(inpath){
@@ -96,18 +95,19 @@ componentDidMount(){
         else{
           this.setState({text: "You have left the path"})
         }
-      latdelta = .01
-      londelta = .01
       var lastRegion = {
         latitude: lat,
         longitude: long,
-        latitudeDelta: latdelta,
-        longitudeDelta: londelta
+        latitudeDelta: .1,
+        longitudeDelta: .1,
       }
-      this.setState({initialPosition: lastRegion})
+      if(changeDelta){
+      this.setState({Region: lastRegion});
+      changeDelta = false;
+    }
     }
     else{
-      this.setState({directionPosition: newpos})
+      this.setState({directionPos: newpos})
     }
 
     },
@@ -119,7 +119,7 @@ componentDidMount(){
 //Dragging Marker and updating the position
 onDragMarker(e){
   console.log('hello');
-  this.setState({loc:e.nativeEvent.coordinate});
+  this.setState({destinationPos:e.nativeEvent.coordinate});
   //Getting the address of the new location for Display
   Geocoder.geocodePosition({lat: e.nativeEvent.coordinate.latitude,
                             lng: e.nativeEvent.coordinate.longitude}).then(res=> {this.setState({text:JSON.stringify(res[0].formattedAddress)})});
@@ -129,16 +129,17 @@ onDragMarker(e){
 //Look up location Button $
 onPress(text){
   //Converting Adress into lat and long and changing the text in search bar
-  Geocoder.geocodeAddress(text).then(res=>{this.setState({loc: text,
-                                                          loc:{latitude:res[0].position.lat,
+  Geocoder.geocodeAddress(text).then(res=>{this.setState({destinationPos: text,
+                                                          destinationPos:{latitude:res[0].position.lat,
                                                                longitude:res[0].position.lng}})});
 }
 
 
 //Start walk button
-onPress2(arr,markerPosition){
+onPress2(arr,userPosition){
   started = true;
-  patharray = arr;
+  pathArray = arr;
+  changeDelta = false;
 }
 
 componentWillUnmount() {
@@ -147,19 +148,14 @@ componentWillUnmount() {
 
   render() {
     //Initializing variables
-    let desc = this.state.desc;
-    let loc = this.state.loc;
+    let destinationPos = this.state.destinationPos;
     let text = this.state.text;
-    let patharr = this.state.patharr;
-    let borderarr = this.state.borderarr;
-    let started = this.state.started;
-    let markerPosition = this.state.markerPosition;
-    let toggle = this.state.toggle;
-    let directionPosition = this.state.directionPosition;
+    let directionArray = this.state.directionArray;
+    let userPosition = this.state.userPosition;
+    let directionPos = this.state.directionPos;
     return (
       //Setting up the map view
-      <MapView style={styles.map} region={this.state.initialPosition} loadingEnabled showUserLocation followUserLocation>
-
+      <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>
         <View style={styles.searchcontainer}>
           {/*Search bar for entering destination location*/}
           <TextInput
@@ -171,29 +167,28 @@ componentWillUnmount() {
           <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}/>
         </View>
           {/*Button for user to start their walk*/}
-          <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.patharr,this.state.markerPosition)}/>
+          <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}/>
 
         {/*Generating Poly line for user to follow*/}
         <MapViewDirections
-          origin={markerPosition}
+          origin={directionPos}
           mode='walking'
-          destination={loc}
+          destination={destinationPos}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={2}
           strokeColor="#e699ff"
-          onReady={(result) => {this.setState({patharr:result.coordinates})}}
+          onReady={(result) => {this.setState({directionArray:result.coordinates})}}
         />
         {/*User location*/}
-        <MapView.Marker coordinate= {markerPosition} title={"yo position"}>
+        <MapView.Marker coordinate= {userPosition} title={"yo position"}>
           <View style={styles.radius}>
             <View style={styles.locationMarker}/>
           </View>
         </MapView.Marker>
         {/*Location of the destination*/}
         <MapView.Marker
-          coordinate= {loc}
-          title={"title"}
-          description={desc}
+          coordinate= {destinationPos}
+          title={"Destination"}
           draggable
           onDragEnd={(e) => this.onDragMarker(e)}
         />
