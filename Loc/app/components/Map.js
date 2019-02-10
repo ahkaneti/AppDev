@@ -77,16 +77,25 @@ componentDidMount(){
     var long = position.coords.longitude
     var latdelta
     var londelta
+    var inpath = false;
     var newpos = {
       latitude: lat,
       longitude: long,
     }
 
     this.setState({markerPosition: newpos})
+
     if(started==true){
-      if(Math.sqrt(Math.pow((patharray[0].latitude-lat),2)+Math.pow((patharray[0].longitude-long),2))>.0005){
-        this.setState({text:"get back in that bitch"})
-      }
+      for(var i=0; i<patharray.length; i++){
+        if(Math.sqrt(Math.pow((patharray[i].latitude-lat),2)+Math.pow((patharray[i].longitude-long),2))<.0005){
+          inpath = true;
+        }}
+        if(inpath){
+          this.setState({text: "You are on path"})
+        }
+        else{
+          this.setState({text: "You have left the path"})
+        }
       latdelta = .01
       londelta = .01
       var lastRegion = {
@@ -132,29 +141,6 @@ onPress2(arr,markerPosition){
   patharray = arr;
 }
 
-
-_isInPolygon(position, area){
-  let x = position.latitude
-  let y = position.longitude
-
-  let inside = false
-  for (let i = 0, j = area.length - 1; i < area.length; j = i++) {
-    let xLat = area[i].latitude
-    let yLat = area[i].longitude
-    let xLon = area[j].latitude
-    let yLon = area[j].longitude
-
-    let intersect = ((yLat > y) !== (yLon > y)) && (x < (xLon - xLat) * (y - yLat) / (yLon - yLat) + xLat)
-    if (intersect) inside = !inside
-  }
-  if(inside){
-    this.setState({text:'success'});
-  }
-  else{
-    this.setState({text:'fail'});
-  }
-}
-
 componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
@@ -183,9 +169,10 @@ componentWillUnmount() {
           />
           {/*Button for entering desitination location*/}
           <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}/>
+        </View>
           {/*Button for user to start their walk*/}
           <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.patharr,this.state.markerPosition)}/>
-        </View>
+
         {/*Generating Poly line for user to follow*/}
         <MapViewDirections
           origin={markerPosition}
@@ -210,11 +197,6 @@ componentWillUnmount() {
           draggable
           onDragEnd={(e) => this.onDragMarker(e)}
         />
-        {renderIf(this.state.toggle)(<TouchableOpacity style={styles.walkbttn}/>)}
-        {renderIf(this.state.toggle)(<TouchableOpacity style={styles.webbttn}/>)}
-        {renderIf(this.state.toggle)(<TouchableOpacity style={styles.areabttn}/>)}
-        {renderIf(this.state.toggle)(<TouchableOpacity style={styles.profbttn}/>)}
-        <TouchableOpacity style={styles.menubttn} onPress={()=>this.menuPress(this.state.toggle)}/>
       </MapView>
     );
   }
@@ -242,8 +224,8 @@ const styles = StyleSheet.create({
 
   },
   startbttn: {
-    marginLeft: 10,
-    marginTop: 70,
+
+    alignSelf: 'baseline',
     height: 40,
     width: 40,
     backgroundColor: '#e699ff',
@@ -252,8 +234,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 70,
     height: 40,
-    width: 225,
-    backgroundColor: 'rgba(255,255,255,.3)',
+    width: 300,
+    backgroundColor: 'rgba(255,255,255,.5)',
     borderColor: 'gray',
     borderWidth: 1,
 
@@ -277,46 +259,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,112,255,.3)',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  menubttn: {
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
-    position: 'absolute',
-    bottom: 50,
-    left:165,
-  },
-  walkbttn: {
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
-    position: 'absolute',
-    bottom: 110,
-    left:130,
-  },
-  webbttn: {
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
-    position: 'absolute',
-    bottom: 110,
-    left:200,
-  },
-  areabttn:{
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
-    position: 'absolute',
-    bottom: 50,
-    left:100,
-  },
-  profbttn:{
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
-    position: 'absolute',
-    bottom: 50,
-    left:230,
   },
   navitigationContainter: {
     flexDirection: 'column',
