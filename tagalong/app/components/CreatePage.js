@@ -12,7 +12,10 @@ import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} fr
 
 
 type Props = {};
-export default class App extends Component<Props> {
+class CreatePage extends Component{
+  RegisterFunction(){
+    this.props.navigation.navigate('AuthentificationPage');
+  };
   render() {
     return (
       <View style={styles.container}>
@@ -27,7 +30,7 @@ export default class App extends Component<Props> {
         <TextInput style={styles.entry}/>
         <Text style={styles.headers}>Password</Text>
         <TextInput style={styles.entry}/>
-        <TouchableOpacity style={styles.login_bttn}><Text style={styles.bttn_text}>Create</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.login_bttn} onPress = {()=>this.RegisterFunction()}><Text style={styles.bttn_text}>Create</Text></TouchableOpacity>
       </View>
     );
   }
@@ -87,3 +90,4 @@ const styles = StyleSheet.create({
     color: 'white',
   }
 });
+export default CreatePage;

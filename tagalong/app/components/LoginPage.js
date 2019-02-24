@@ -7,12 +7,19 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
 
 
 type Props = {};
-export default class App extends Component<Props> {
+class LoginPage extends Component{
+  LoginFunction(){
+    this.props.navigation.navigate('Tabs');
+  };
+  ForgotFunction(){
+    this.props.navigation.navigate('ForgotPasswordPage');
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -23,7 +30,8 @@ export default class App extends Component<Props> {
         <TextInput style={styles.password_entry}/>
 
         <Text style={styles.signup_link}>Don't have an account? Make one here</Text>
-        <TouchableOpacity style={styles.login_bttn}><Text style={styles.bttn_text}>Login</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.login_bttn} onPress={() => this.LoginFunction()}><Text style={styles.bttn_text}>Login</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.login_bttn} onPress={() => this.ForgotFunction()}><Text style={styles.bttn_text}>Forgot Password</Text></TouchableOpacity>
       </View>
     );
   }
@@ -83,3 +91,5 @@ const styles = StyleSheet.create({
     color: 'white',
   }
 });
+
+export default LoginPage;
