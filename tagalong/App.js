@@ -11,7 +11,7 @@ import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, Ani
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
-
+import Logo from './src/components/Logo'; // Import component from another file
 
 
 //API set up and variables
@@ -154,17 +154,21 @@ componentWillUnmount() {
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
     return (
+
       //Setting up the map view
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>
-        <View style={styles.searchcontainer}>
-          {/*Search bar for entering destination location*/}
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-          />
-          {/*Button for entering desitination location*/}
-          <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}/>
+        <View style={styles.header}>
+          <Logo></Logo>
+          <View style={styles.searchcontainer}>
+            {/*Search bar for entering destination location*/}
+            <TextInput
+              style={styles.input}
+              onChangeText={(text) => this.setState({text})}
+              value={this.state.text}
+            />
+            {/*Button for entering desitination location*/}
+            <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}/>
+          </View>
         </View>
           {/*Button for user to start their walk*/}
           <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}/>
@@ -204,6 +208,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  header: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingTop: '8%',
   },
   searchcontainer: {
     position:'relative',
