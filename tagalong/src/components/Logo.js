@@ -1,7 +1,4 @@
-/* This is an example of how we should format our front-end components */
 import React, { Component } from 'react';
-// Probably don't need to import all of these, but depending on what's in the
-// component, it can't hurt.
 import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
 
 class Logo extends Component {
@@ -16,9 +13,8 @@ class Logo extends Component {
 }
 const styles = StyleSheet.create({
   title: {
-    // padding:'5%',
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    // paddingTop:'1%',
+    paddingBottom:'10%',
   },
   span1: {
     color: '#ffffff',
@@ -30,5 +26,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// *****Important*****
 export default Logo;

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#d69ef7',
+    backgroundColor: '#CC51A3',
   },
   logo: {
     fontSize: 40,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 100,
     height: 50,
-    backgroundColor: '#d69ef7',
+    backgroundColor: '#CEA2AC',
     borderRadius: 25,
     shadowColor: 'rgba(0,0,0, .9)', // IOS
     shadowOffset: { height: 1, width: 1 }, // IOS
