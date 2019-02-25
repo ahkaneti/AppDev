@@ -11,6 +11,7 @@ import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, Ani
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
+import SocketIOClient from 'socket.io-client';
 
 
 
@@ -30,6 +31,7 @@ class WalkPage extends Component<Props> {
 
 constructor(props){
   super(props);
+
   //Setting initial variables
   this.state = {
     //The coordinates of where your direction path starts, changes until with you location until you click start
@@ -48,6 +50,24 @@ constructor(props){
       longitude:0,
     },
   };
+
+  //Setting up socket
+  this.socket = SocketIOClient("https://bradleyramos-login-boiler-plate.glitch.me");
+
+  //Let the server know who got connected
+  const msg = {
+    username: "username",
+    message: "Connected."
+  };
+  this.socket.emit('message', msg);
+
+  //On data receive
+  this.socket.on('send', (data) => {
+    for (let content of data)
+    {
+      console.log(content);
+    }
+  });
 }
 
 watchID = null
@@ -70,6 +90,15 @@ componentDidMount(){
     }
     //updating the user position and region
     this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
+    //Sending lattitude and longitude
+    const loc = {
+      username: "username",
+      message: "Sending current location.",
+      lattitude: lat,
+      longitude: long
+    };
+    this.socket.emit('location', loc);
+
   });
   //Updating user position as they move
   this.watchID = navigator.geolocation.watchPosition((position) => {
