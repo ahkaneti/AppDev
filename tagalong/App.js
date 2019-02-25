@@ -11,16 +11,16 @@ import React, { Component } from 'react';
 import {Text, View} from 'react-native';
 import {createStackNavigator, createBottomTabNavigator, createAppContainer} from 'react-navigation';
 
-import WalkPage from './app/components/WalkPage';
-import LoginPage from './app/components/LoginPage';
-import CreatePage from './app/components/CreatePage';
-import WebPage from './app/components/WebPage';
-import CreateLoginPage from './app/components/CreateLoginPage';
-import ForgotPasswordPage from './app/components/ForgotPasswordPage';
-import AuthentificationPage from './app/components/AuthentificationPage';
-import BoxPage from './app/components/BoxPage';
-import ProfilePage from './app/components/ProfilePage';
-import FriendsPage from './app/components/FriendsPage';
+import WalkPage from './src/components/WalkPage';
+import LoginPage from './src/components/LoginPage';
+import CreatePage from './src/components/CreatePage';
+import WebPage from './src/components/WebPage';
+import CreateLoginPage from './src/components/CreateLoginPage';
+import ForgotPasswordPage from './src/components/ForgotPasswordPage';
+import AuthentificationPage from './src/components/AuthentificationPage';
+import BoxPage from './src/components/BoxPage';
+import ProfilePage from './src/components/ProfilePage';
+import FriendsPage from './src/components/FriendsPage';
 
 const Tabs = createBottomTabNavigator({
   WalkPage: {
