@@ -11,7 +11,7 @@ import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, Ani
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
-import SocketIOClient from 'socket.io-client';
+//import SocketIOClient from 'socket.io-client';
 
 
 
@@ -52,6 +52,7 @@ constructor(props){
   };
 
   //Setting up socket
+  /*
   this.socket = SocketIOClient("https://bradleyramos-login-boiler-plate.glitch.me");
 
   //Let the server know who got connected
@@ -67,7 +68,7 @@ constructor(props){
     {
       console.log(content);
     }
-  });
+  });*/
 }
 
 watchID = null
@@ -97,7 +98,7 @@ componentDidMount(){
       lattitude: lat,
       longitude: long
     };
-    this.socket.emit('location', loc);
+    //this.socket.emit('location', loc);
 
   });
   //Updating user position as they move
