@@ -14,8 +14,13 @@
     "react-native-gesture-handler": "^1.0.16",
     "react-native-maps": "^0.23.0",
     "react-native-maps-directions": "^1.6.0",
+<<<<<<< HEAD
     "react-native-typography": "^1.4.0",
     "react-navigation": "^3.3.0"
+=======
+    "react-navigation": "^3.3.0",
+    "socket.io-client": "^2.2.0"
+>>>>>>> 7baa5c7ff46a1225d8896338faea6a5ac8975843
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
