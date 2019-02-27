@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#CC51A3',
+    backgroundColor: '#BD9BF7',
   },
   logo: {
     fontSize: 40,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   user_entry: {
     textAlign: 'center',
-    height: 25,
+    height: 30,
     width: 240,
     backgroundColor: 'white',
 
@@ -57,19 +57,19 @@ const styles = StyleSheet.create({
   },
   entry: {
     textAlign: 'center',
-    height: 25,
+    height: 30,
     width: 240,
     backgroundColor: 'white',
 
     borderRadius: 25,
   },
   login_bttn: {
-    marginTop: 10,
+    marginTop: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100,
-    height: 50,
-    backgroundColor: '#CEA2AC',
+    width: 150,
+    height: 60,
+    backgroundColor: '#AF8CEA',
     borderRadius: 25,
     shadowColor: 'rgba(0,0,0, .9)', // IOS
     shadowOffset: { height: 1, width: 1 }, // IOS
@@ -84,10 +84,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     color: 'white',
     fontSize: 20,
+    fontFamily: 'Verdana',
   },
   bttn_text: {
-    fontSize: 20,
+    textAlign: 'center',
+    fontFamily: 'Verdana',
     color: 'white',
+    fontSize: 15,
   }
 });
 export default CreatePage;

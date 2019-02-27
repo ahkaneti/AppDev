@@ -58,7 +58,13 @@ const Nav = createStackNavigator({
   AuthentificationPage: {
     screen: AuthentificationPage,
   },
-});
+},
+{
+  headerMode: 'none',
+  defaultNavigationOptions: {
+    headerVisible: false,
+  }
+  });
 
 const App = createAppContainer(Nav);
 
