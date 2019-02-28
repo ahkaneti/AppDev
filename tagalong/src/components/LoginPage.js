@@ -13,21 +13,42 @@ import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} fr
 
 type Props = {};
 class LoginPage extends Component{
+  constructor(props){
+    super(props);
+  
+    this.state = {
+      email: '',
+      password: ''
+    };
+
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+  }
+
   LoginFunction(){
+    console.log(this.state);
     this.props.navigation.navigate('Tabs');
   };
   ForgotFunction(){
     this.props.navigation.navigate('ForgotPasswordPage');
+  };
+  handleEmailChange(text){
+    this.setState({email: text});
+    console.log(text);
+  };
+
+  handlePasswordChange(text){
+    this.setState({password: text});
   };
 
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.logo}>Login</Text>
-        <Text style={styles.headers}>Username</Text>
-        <TextInput style={styles.user_entry}/>
+        <Text style={styles.headers}>Email</Text>
+        <TextInput style={styles.user_entry} value={this.state.email} onChangeText={this.handleEmailChange}/>
         <Text style={styles.headers}>Password</Text>
-        <TextInput style={styles.password_entry}/>
+        <TextInput style={styles.password_entry} secureTextEntry={true} password={true} value={this.state.password} onChangeText={this.handlePasswordChange}/>
         <TouchableOpacity style={styles.login_bttn} onPress={() => this.LoginFunction()}><Text style={styles.bttn_text}>Login</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.ForgotFunction()}><Text style={styles.bttn_text}>Forgot Password</Text></TouchableOpacity>
       </View>
