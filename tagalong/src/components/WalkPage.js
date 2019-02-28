@@ -186,21 +186,10 @@ componentWillUnmount() {
 
     return (
       //Setting up the map view
+      <View style={styles.container}>
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>
           {/*Search bar for entering destination location*/}
-          <View style={styles.searchcontainer}>
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-          />
-          {/*Button for entering desitination location*/}
-          <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}/>
-          </View>
-          {/*Button for user to start their walk*/}
-          <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}>
-          <Text>Start</Text>
-          </TouchableOpacity>
+
 
         {/*Generating Poly line for user to follow*/}
         <MapViewDirections
@@ -226,15 +215,34 @@ componentWillUnmount() {
           onDragEnd={(e) => this.onDragMarker(e)}
         />
       </MapView>
+      <View style={styles.searchcontainer}>
+      <TextInput
+        style={styles.input}
+        onChangeText={(text) => this.setState({text})}
+        value={this.state.text}
+      />
+      {/*Button for entering desitination location*/}
+      <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}>
+      <Image source={require('../../images/search.png')} style={{width: 32.5, height: 22.5,}}/>
+      </TouchableOpacity>
+      </View>
+      {/*Button for user to start their walk*/}
+      <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}>
+      <Text style={styles.starttext}>Start</Text>
+      </TouchableOpacity>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container:{
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   map: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    ...StyleSheet.absoluteFillObject,
   },
   searchcontainer: {
 
@@ -243,13 +251,14 @@ const styles = StyleSheet.create({
 
   },
   enterbttn: {
-    marginTop: 30,
+    marginTop: 10,
     marginLeft: 10,
     justifyContent: 'center',
     width: 40,
     height: 40,
     backgroundColor: '#BD9BF7',
     borderRadius: 25,
+    alignItems: 'center',
     shadowColor: 'rgba(0,0,0, .9)', // IOS
     shadowOffset: { height: 1, width: 1 }, // IOS
     shadowOpacity: 1, // IOS
@@ -261,6 +270,8 @@ const styles = StyleSheet.create({
   },
   startbttn: {
     marginTop: 510,
+    marginBottom: 10,
+
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -273,8 +284,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 1, // IOS
     shadowRadius: 1,
   },
+  starttext: {
+    textAlign: 'center',
+    fontFamily: 'Verdana',
+    color: 'white',
+    fontSize: 20,
+  },
   input: {
-    marginTop: 30,
+    marginTop: 10,
     marginLeft: 10,
     height: 40,
     width: 300,

@@ -115,16 +115,12 @@ class BoxPage extends Component{
     clearFunction(){
       var temp = [];
       this.setState({polygonArray: temp});
-      clicked = true;
     }
     polygonFunction(e){
-      if(clicked){
-        clicked = false;
-      }
-      else{
+
       var temp = this.state.polygonArray.concat(e);
       this.setState({polygonArray: temp});
-    }
+
     }
 
 
@@ -148,6 +144,7 @@ class BoxPage extends Component{
     let polygonArray = this.state.polygonArray;
     return (
       //Setting up the map view
+      <View style={styles.container}>
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation onPress={(e) => this.polygonFunction(e.nativeEvent.coordinate)}>
       <MapView.Polygon
       coordinates={polygonArray}
@@ -155,31 +152,70 @@ class BoxPage extends Component{
                     strokeColor="rgba(0,0,0,0.5)"
                     strokeWidth={2}
                     />
-      <TouchableOpacity style={styles.clearbttn} onPress={()=> this.clearFunction()}/>
+
       </MapView>
+      <TouchableOpacity style={styles.clearbttn} onPress={()=> this.clearFunction()}>
+      <Text style={styles.cleartext}> X </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.startbttn} onPress={()=> this.clearFunction()}>
+      <Text style={styles.starttext}> Start </Text>
+      </TouchableOpacity>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   map: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    ...StyleSheet.absoluteFillObject,
   },
   clearbttn:{
-      marginTop: 510,
-      alignSelf: 'center',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: 150,
-      height: 30,
-      backgroundColor: '#BD9BF7',
-      borderRadius: 25,
-      shadowColor: 'rgba(0,0,0, .9)', // IOS
-      shadowOffset: { height: 1, width: 1 }, // IOS
-      shadowOpacity: 1, // IOS
-      shadowRadius: 1,
+    alignSelf: 'flex-end',
+    marginRight: 10,
+    marginTop: 10,
+    alignItems:'center',
+    justifyContent:'center',
+    width: 40,
+    height: 40,
+    backgroundColor: '#BD9BF7',
+    borderRadius: 25,
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
+  },
+  cleartext:{
+    fontFamily: 'Verdana',
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  startbttn:{
+    marginTop: 510,
+    marginBottom: 10,
+
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 30,
+    backgroundColor: '#BD9BF7',
+    borderRadius: 25,
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
+  },
+  starttext:{
+    textAlign: 'center',
+    fontFamily: 'Verdana',
+    color: 'white',
+    fontSize: 20,
   },
 
   locationMarker: {
