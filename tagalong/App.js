@@ -8,7 +8,7 @@
 //Import statements
 
 import React, { Component } from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, Image} from 'react-native';
 import {createStackNavigator, createBottomTabNavigator, createAppContainer} from 'react-navigation';
 
 import WalkPage from './src/components/WalkPage';
@@ -25,19 +25,51 @@ import FriendsPage from './src/components/FriendsPage';
 const Tabs = createBottomTabNavigator({
   WalkPage: {
     screen: WalkPage,
+    navigationOptions: {
+    tabBarIcon: ({tintColor}) => (
+      <Image source={require('./images/Walk.png')} style={{width: 55, height: 55,}}/>
+      )
+  }
   },
   WebPage: {
     screen: WebPage,
+    navigationOptions: {
+    tabBarIcon: ({tintColor}) => (
+      <Image source={require('./images/Web.png')} style={{width: 40, height: 40,}}/>
+      )
+  }
   },
   BoxPage: {
     screen: BoxPage,
+    navigationOptions: {
+    tabBarIcon: ({tintColor}) => (
+      <Image source={require('./images/Box.png')} style={{width: 65, height: 65,}}/>
+      )
+  }
   },
-  ProfilePage: {
-    screen: ProfilePage,
-  },
+
   FriendsPage: {
     screen: FriendsPage,
-  },
+    navigationOptions: {
+    tabBarIcon: ({tintColor}) => (
+      <Image source={require('./images/Friends.png')} style={{width: 45, height: 45,}}/>
+      )
+  }},
+  ProfilePage: {
+    screen: ProfilePage,
+    navigationOptions: {
+      tabBarIcon: ({tintColor}) => (
+        <Image source={require('./images/Profile.png')} style={{width: 47.5, height: 47.5,}}/>
+        )
+    }
+  }},
+  {
+    tabBarOptions: {
+      showLabel: false,
+      activeTintColor: 'blue',
+      inactiveTintColor: 'red',
+    }
+
 });
 const Nav = createStackNavigator({
   CreateLoginPage: {
