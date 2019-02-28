@@ -186,8 +186,8 @@ componentWillUnmount() {
     return (
       //Setting up the map view
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>
-        <View style={styles.searchcontainer}>
           {/*Search bar for entering destination location*/}
+          <View style={styles.searchcontainer}>
           <TextInput
             style={styles.input}
             onChangeText={(text) => this.setState({text})}
@@ -195,9 +195,11 @@ componentWillUnmount() {
           />
           {/*Button for entering desitination location*/}
           <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}/>
-        </View>
+          </View>
           {/*Button for user to start their walk*/}
-          <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}/>
+          <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}>
+          <Text>Start</Text>
+          </TouchableOpacity>
 
         {/*Generating Poly line for user to follow*/}
         <MapViewDirections
@@ -206,7 +208,7 @@ componentWillUnmount() {
           destination={destinationPos}
           apikey={GOOGLE_MAPS_APIKEY}
           strokeWidth={2}
-          strokeColor="#e699ff"
+          strokeColor="#BD9BF7"
           onReady={(result) => {this.setState({directionArray:result.coordinates})}}
         />
         {/*User location*/}
@@ -229,38 +231,53 @@ componentWillUnmount() {
 
 const styles = StyleSheet.create({
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
   },
   searchcontainer: {
+
     position:'relative',
     flexDirection: 'row',
 
   },
   enterbttn: {
+    marginTop: 30,
     marginLeft: 10,
-    marginTop: 70,
+    justifyContent: 'center',
+    width: 40,
+    height: 40,
+    backgroundColor: '#BD9BF7',
+    borderRadius: 25,
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
+  },
+  searchimg:{
     height: 40,
     width: 40,
-    backgroundColor: '#e699ff',
-
   },
   startbttn: {
-
-    alignSelf: 'baseline',
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
+    marginTop: 510,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 30,
+    backgroundColor: '#BD9BF7',
+    borderRadius: 25,
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
   },
   input: {
+    marginTop: 30,
     marginLeft: 10,
-    marginTop: 70,
     height: 40,
     width: 300,
-    backgroundColor: 'rgba(255,255,255,.5)',
+    backgroundColor: 'rgba(255,255,255,.9)',
     borderColor: 'gray',
     borderWidth: 1,
 
