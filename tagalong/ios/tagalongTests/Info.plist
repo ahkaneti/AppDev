@@ -20,5 +20,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSAppTransportSecurity</key>
+  <key>NSAllowsArbitraryLoads</key>
+  <true/>
 </dict>
 </plist>
