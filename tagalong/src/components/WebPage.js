@@ -51,24 +51,26 @@ constructor(props){
     },
   };
 
+
   //Setting up socket
-  this.socket = SocketIOClient("https://bradleyramos-login-boiler-plate.glitch.me");
+  this.socket = SocketIOClient("https://luminous-magic-1.glitch.me");
 
   //Let the server know who got connected
   const msg = {
     username: "username",
-    message: "Connected."
+    message: "Connected.",
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
   };
-  this.socket.emit('message', msg);
+  this.socket.emit('shareUser', msg);
   this.web = {};
   //On data receive
-  this.socket.on('send', (data) => {
+  this.socket.on('status', (data) => {
+      console.log(data.msg);
+    });
+  this.socket.on('newUser', (data) => {
     for (let content of data)
     {
-      if (username in content.web)
-      {
-        this.web[content.username] = [content.lattitude, content.longitude];
-      }
+      this.web[content.username] = [content.lattitude, content.longitude];
     }
   });
 }
@@ -91,17 +93,19 @@ componentDidMount(){
       latitudeDelta: .007,
       longitudeDelta: .007,
     }
-    //updating the user position and region
-    this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
-    //Sending lattitude and longitude
+
+    //Sending initial lattitude and longitude
     const loc = {
-      username: "username",
+      name: "username",
       message: "Sending current location.",
       lattitude: lat,
-      longitude: long,
-      web: this.web
+      longitude: long
     }
-    this.socket.emit('location', loc)
+    this.socket.emit('shareLocation', loc)
+
+    //updating the user position and region
+    this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
+
 
   });
   //Updating user position as they move
@@ -114,6 +118,15 @@ componentDidMount(){
       latitude: lat,
       longitude: long,
     }
+
+    //Sending lattitude and longitude
+    const loc = {
+      name: "username",
+      message: "Sending current location.",
+      lattitude: lat,
+      longitude: long
+    }
+    this.socket.emit('shareLocation', loc)
 
     this.setState({userPosition: newpos})
 
