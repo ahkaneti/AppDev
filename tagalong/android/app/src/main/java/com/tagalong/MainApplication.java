@@ -3,6 +3,7 @@ package com.tagalong;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.surialabs.rn.geofencing.GeoFencingPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.devfd.RNGeocoder.RNGeocoderPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new GeoFencingPackage(),
             new RNGestureHandlerPackage(),
             new RNGeocoderPackage(),
             new MapsPackage()

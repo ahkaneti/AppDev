@@ -183,6 +183,7 @@ componentWillUnmount() {
     let directionArray = this.state.directionArray;
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
+
     return (
       //Setting up the map view
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>
