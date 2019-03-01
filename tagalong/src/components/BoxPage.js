@@ -14,9 +14,13 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyCSFIWbcI5EGJtJSrFXh-4WfrtgzdICDFg';
 var started = false;
 var temparray = [];
 var clicked = false;
+var polygonArray = [];
+var checkArray = [];
 //Holds the generated walking path so we can verify that a user is following the path
 //Keeps track of when Delta/Zoom needs to change
 var changeDelta = false;
+var point = {lat:41.881832, lng: -87.623177};
+var inside = require('point-in-polygon');
 class BoxPage extends Component{
   constructor(props){
     super(props);
@@ -102,10 +106,28 @@ class BoxPage extends Component{
         longitude: long,
       }
       this.setState({userPosition: newpos})
-      GeoFencing.containsLocation({latitude:41.881832,longitude:-87.623177}, polygonArray)
-        .then(() => clearFunction())
-        .catch(() => console.log('point is NOT within polygon'))
-      },
+      _isInPolygon = (newpos, polygonArray) => {
+
+        let x = point.latitude
+        let y = point.longitude
+
+        let inside = false
+        for (let i = 0, j = polygonArray.length - 1; i < polygonArray.length; j = i++) {
+          let xLat = polygonArray[i].latitude
+          let yLat = polygonArray[i].longitude
+          let xLon = polygonArray[j].latitude
+          let yLon = polygonArray[j].longitude
+
+          let intersect = ((yLat > y) !== (yLon > y)) && (x < (xLon - xLat) * (y - yLat) / (yLon - yLat) + xLat)
+          if (intersect) inside = !inside
+        }
+    return inside
+  }
+  if(inside){
+    var temp = [];
+    this.setState({polygonArray: temp});
+  }
+ },
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: false, timeout: 5000, maximumAge: 0, distanceFilter: 1});
 
@@ -117,10 +139,8 @@ class BoxPage extends Component{
       this.setState({polygonArray: temp});
     }
     polygonFunction(e){
-
       var temp = this.state.polygonArray.concat(e);
       this.setState({polygonArray: temp});
-
     }
 
 
@@ -151,14 +171,20 @@ class BoxPage extends Component{
                     fillColor="rgba(189, 155, 247, 0.5)"
                     strokeColor="rgba(0,0,0,0.5)"
                     strokeWidth={2}
-                    />
+      />
+      <MapView.Marker coordinate= {userPosition} title={"yo position"}>
+        <View style={styles.radius}>
+          <View style={styles.locationMarker}/>
+        </View>
+      </MapView.Marker>
+
 
       </MapView>
       <TouchableOpacity style={styles.clearbttn} onPress={()=> this.clearFunction()}>
-      <Text style={styles.cleartext}> X </Text>
+      <Text style={styles.cleartext}>X</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.startbttn} onPress={()=> this.clearFunction()}>
-      <Text style={styles.starttext}> Start </Text>
+      <Text style={styles.starttext}>Start</Text>
       </TouchableOpacity>
       </View>
     );
@@ -194,11 +220,11 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
+
   },
   startbttn:{
     marginTop: 510,
     marginBottom: 10,
-
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -216,6 +242,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Verdana',
     color: 'white',
     fontSize: 20,
+
   },
 
   locationMarker: {
