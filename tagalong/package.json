@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
+    "axios": "^0.18.0",
     "point-in-polygon": "^1.0.1",
     "react": "16.6.3",
     "react-native": "0.58.5",
@@ -18,6 +19,9 @@
     "react-native-maps-directions": "^1.6.0",
     "react-native-typography": "^1.4.0",
     "react-navigation": "^3.3.0",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-axios-middleware": "^4.0.0",
     "socket.io-client": "^2.2.0"
   },
   "devDependencies": {

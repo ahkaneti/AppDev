@@ -9,6 +9,11 @@
 
 import React, { Component } from 'react';
 import {Text, View, Image} from 'react-native';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider, connect } from 'react-redux';
+import axios from 'axios';
+import axiosMiddleware from 'redux-axios-middleware';
+
 import {createStackNavigator, createBottomTabNavigator, createAppContainer} from 'react-navigation';
 
 import WalkPage from './src/components/WalkPage';
@@ -21,6 +26,11 @@ import AuthentificationPage from './src/components/AuthentificationPage';
 import BoxPage from './src/components/BoxPage';
 import ProfilePage from './src/components/ProfilePage';
 import FriendsPage from './src/components/FriendsPage';
+
+const client = axios.create({
+  baseURL: 'http://bradleyramos-login-boiler-plate.glitch.me',
+  responseType: 'json'
+});
 
 const Tabs = createBottomTabNavigator({
   WalkPage: {
