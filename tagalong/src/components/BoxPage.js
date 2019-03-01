@@ -3,19 +3,14 @@ import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, Ani
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
-import GeoFencing from 'react-native-geo-fencing';
 
 
-type Props = {};
 type Props = {};
 //API Key for the google maps API
 const GOOGLE_MAPS_APIKEY = 'AIzaSyCSFIWbcI5EGJtJSrFXh-4WfrtgzdICDFg';
 //Variable keeps track if the walk has started
 var started = false;
-var temparray = [];
-var clicked = false;
 var polygonArray = [];
-var checkArray = [];
 //Holds the generated walking path so we can verify that a user is following the path
 //Keeps track of when Delta/Zoom needs to change
 var changeDelta = false;
@@ -27,10 +22,6 @@ class BoxPage extends Component{
 
     //Setting initial variables
     this.state = {
-      //The coordinates of where your direction path starts, changes until with you location until you click start
-      directionPos: {latitude: 0, longitude:0},
-      //Text for the search bar
-      text: 'Enter Destination',
       //Array of points of the walking path to be passed to the check function
       directionArray:[],
       //The coordinate of your destination
@@ -145,10 +136,7 @@ class BoxPage extends Component{
 
 
 
-  //Dragging Marker and updating the position
 
-
-  //Look up location Button $
 
 
   componentWillUnmount() {
@@ -166,25 +154,21 @@ class BoxPage extends Component{
       //Setting up the map view
       <View style={styles.container}>
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation onPress={(e) => this.polygonFunction(e.nativeEvent.coordinate)}>
-      <MapView.Polygon
-      coordinates={polygonArray}
-                    fillColor="rgba(189, 155, 247, 0.5)"
-                    strokeColor="rgba(0,0,0,0.5)"
-                    strokeWidth={2}
-      />
-      <MapView.Marker coordinate= {userPosition} title={"yo position"}>
-        <View style={styles.radius}>
-          <View style={styles.locationMarker}/>
-        </View>
-      </MapView.Marker>
-
-
+        <MapView.Polygon coordinates={polygonArray}
+                         fillColor="rgba(189, 155, 247, 0.5)"
+                         strokeColor="rgba(0,0,0,0.5)"
+                         strokeWidth={2}/>
+        <MapView.Marker coordinate= {userPosition} title={"yo position"}>
+          <View style={styles.radius}>
+            <View style={styles.locationMarker}/>
+          </View>
+        </MapView.Marker>
       </MapView>
       <TouchableOpacity style={styles.clearbttn} onPress={()=> this.clearFunction()}>
-      <Text style={styles.cleartext}>X</Text>
+        <Text style={styles.cleartext}>X</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.startbttn} onPress={()=> this.clearFunction()}>
-      <Text style={styles.starttext}>Start</Text>
+        <Text style={styles.starttext}>Start</Text>
       </TouchableOpacity>
       </View>
     );
@@ -244,7 +228,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
 
   },
-
   locationMarker: {
     height: 20,
     width: 20,
@@ -265,11 +248,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  navitigationContainter: {
-    flexDirection: 'column',
-    alignItems: 'center',
-  }
-
-
 });
 export default BoxPage;

@@ -216,21 +216,19 @@ componentWillUnmount() {
         />
       </MapView>
       <View style={styles.searchcontainer}>
-      <TextInput
-        style={styles.input}
-        onChangeText={(text) => this.setState({text})}
-        value={this.state.text}
-      />
-      {/*Button for entering desitination location*/}
-      <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}>
-      <Image source={require('../../images/search.png')} style={{width: 32.5, height: 22.5,}}/>
-      </TouchableOpacity>
+        <TextInput style={styles.input}
+                   onChangeText={(text) => this.setState({text})}
+                   value={this.state.text}/>
+        {/*Button for entering desitination location*/}
+        <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}>
+          <Image source={require('../../images/search.png')} style={{width: 32.5, height: 22.5,}}/>
+        </TouchableOpacity>
       </View>
       {/*Button for user to start their walk*/}
       <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}>
-      <Text style={styles.starttext}>Start</Text>
+        <Text style={styles.starttext}>Start</Text>
       </TouchableOpacity>
-      </View>
+    </View>
     );
   }
 }
@@ -245,10 +243,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   searchcontainer: {
-
     position:'relative',
     flexDirection: 'row',
-
   },
   enterbttn: {
     marginTop: 10,
@@ -267,7 +263,6 @@ const styles = StyleSheet.create({
   startbttn: {
     marginTop: 500,
     marginBottom: 10,
-
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -320,7 +315,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   }
-
-
 });
 export default WalkPage;
