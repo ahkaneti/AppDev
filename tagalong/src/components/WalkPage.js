@@ -14,23 +14,22 @@ import Geocoder from 'react-native-geocoder-reborn';
 import SocketIOClient from 'socket.io-client';
 
 
-
 //API set up and variables
 type Props = {};
 //API Key for the google maps API
 const GOOGLE_MAPS_APIKEY = 'AIzaSyCSFIWbcI5EGJtJSrFXh-4WfrtgzdICDFg';
 //Variable keeps track if the walk has started
 var started = false;
-//Holds the generated walking path so we can verify that a user is following the path
-var directionArrayay = [];
 //Keeps track of when Delta/Zoom needs to change
 var changeDelta = false;
 var firstname = "FIRST_NAME";
+
 
 class WalkPage extends Component<Props> {
 
 constructor(props){
   super(props);
+<<<<<<< HEAD
 
   firstname = fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/secure/profile?secret_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleXJhbW9zQHlhaG9vLmNvbSJ9LCJpYXQiOjE1NTE1MTA1MDh9.WOYEa9xFWED0izLb29taasorMokfUJmyBpRUDD-7D-Y', {
         method: 'GET',
@@ -45,6 +44,8 @@ constructor(props){
       .catch((error)=> {
         console.error(error);
       });
+=======
+>>>>>>> 06098a2a405f217e93d437b695761adee2fc357a
   //Setting initial variables
   this.state = {
     //The coordinates of where your direction path starts, changes until with you location until you click start
@@ -105,8 +106,6 @@ componentDidMount(){
     }
     //updating the user position and region
     this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
-
-
   });
   //Updating user position as they move
   this.watchID = navigator.geolocation.watchPosition((position) => {
@@ -118,9 +117,7 @@ componentDidMount(){
       latitude: lat,
       longitude: long,
     }
-
     this.setState({userPosition: newpos})
-
     if(started==true){
       for(var i=0; i<pathArray.length; i++){
         if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0001){
@@ -149,13 +146,10 @@ componentDidMount(){
       if(changeDelta){
       this.setState({Region: lastRegion});
       changeDelta = false;
-    }
-    }
+    }}
     else{
       this.setState({directionPos: newpos})
-    }
-
-    },
+    }},
     (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: false, timeout: 5000, maximumAge: 0, distanceFilter: 1});
   }
@@ -170,7 +164,6 @@ onDragMarker(e){
                             lng: e.nativeEvent.coordinate.longitude}).then(res=> {this.setState({text:JSON.stringify(res[0].formattedAddress)})});
 }
 
-
 //Look up location Button $
 onPress(text){
   //Converting Adress into lat and long and changing the text in search bar
@@ -178,7 +171,6 @@ onPress(text){
                                                           destinationPos:{latitude:res[0].position.lat,
                                                                longitude:res[0].position.lng}})});
 }
-
 
 //Start walk button
 onPress2(arr,userPosition){
@@ -204,9 +196,6 @@ componentWillUnmount() {
       //Setting up the map view
       <View style={styles.container}>
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>
-          {/*Search bar for entering destination location*/}
-
-
         {/*Generating Poly line for user to follow*/}
         <MapViewDirections
           origin={directionPos}
