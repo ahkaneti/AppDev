@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   enterbttn: {
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 10,
     justifyContent: 'center',
     width: 40,
@@ -255,6 +255,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#BD9BF7',
     borderRadius: 25,
     alignItems: 'center',
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
   },
   searchimg:{
     height: 40,
@@ -279,10 +283,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 15,
+    fontSize: 20,
   },
   input: {
-    marginTop: 10,
+    marginTop: 5,
     marginLeft: 10,
     height: 40,
     width: 300,

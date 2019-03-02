@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
   },
   clearbttn:{
     alignSelf: 'flex-end',
-    marginRight: 10,
-    marginTop: 10,
+    marginRight: 7.5,
+    marginTop: 15,
     alignItems:'center',
     justifyContent:'center',
     width: 40,
@@ -202,12 +202,11 @@ const styles = StyleSheet.create({
   cleartext:{
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 25,
 
   },
   startbttn:{
-    marginTop: 510,
+    marginTop: 500,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
