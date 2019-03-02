@@ -28,7 +28,7 @@ class LoginPage extends Component{
   LoginFunction(){
     console.log(this.state);
     this.props.navigation.navigate('Tabs');
-    return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/login, {
+    return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/login', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
