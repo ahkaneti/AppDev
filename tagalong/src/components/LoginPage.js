@@ -9,8 +9,10 @@
 
 import React, { Component } from 'react';
 import {Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
-import { saveUserToken } from '../redux/actions';
-import { getUserToken } from '../redux/actions';
+// import { connect } from 'react-redux';
+// import { saveUserToken } from '../redux/actions';
+// import { getUserToken } from '../redux/actions';
+import './global.js';
 
 type Props = {};
 class LoginPage extends Component{
@@ -26,6 +28,16 @@ class LoginPage extends Component{
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   };
 
+  // signInAsync() {
+  //         this.props.saveUserToken()
+  //             .then(() => {
+  //                 this.props.navigation.navigate('Tabs');
+  //             })
+  //             .catch((error) => {
+  //                 this.setState({ error })
+  //             })
+  //     };
+
   LoginFunction(){
     console.log(this.state);
     return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/login', {
@@ -40,8 +52,14 @@ class LoginPage extends Component{
         }),
         }).then((response) => response.json())
         .then((responseJson)=> {
-          console.log(responseJson);
-          //this.props.saveUserToken(responseJson.first_name);
+          if (responseJson.token) {
+            global.token = responseJson.token;
+            console.log(global.token);
+            this.props.navigation.navigate('Tabs');
+            //this.props.saveUserToken(responseJson.first_name);
+          } else {
+            alert('Invalid email or password.')
+          }
         })
         .catch((error)=> {
           console.error(error);
@@ -73,8 +91,7 @@ class LoginPage extends Component{
         <Text style={styles.headers}>Password</Text>
         <TextInput style={styles.password_entry} secureTextEntry={true} password={true} onChangeText={this.handlePasswordChange} value={this.state.password}/>
         <TouchableOpacity style={styles.login_bttn} onPress={() => {
-          this.LoginFunction();
-          //this.props.navigation.navigate('Tabs');
+          this.LoginFunction()
         }}>
             <Text style={styles.bttn_text}>Login</Text>
         </TouchableOpacity>
@@ -144,4 +161,14 @@ const styles = StyleSheet.create({
   }
 });
 
+// const mapStateToProps = state => ({
+//     token: state.token,
+// });
+
+
+// const mapDispatchToProps = dispatch => ({
+//     saveUserToken: () => dispatch(saveUserToken()),
+// });
+//
+// export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
 export default LoginPage;

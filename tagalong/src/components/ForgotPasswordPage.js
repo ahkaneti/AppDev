@@ -13,6 +13,27 @@ class ForgotPasswordPage extends Component{
     }
   }
 
+  ChangePasswordFunction(){
+    console.log(this.state);
+    return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/api/users/changePassword', {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          changeEmail: this.state.emailText,
+          changePassword: this.state.passwordText,
+        }),
+        }).then((response) => response.json())
+        .then((responseJson)=> {
+            this.props.navigation.navigate('LoginPage');
+        })
+        .catch((error)=> {
+          console.error(error);
+        });
+      };
+
   BackFunction(){
     this.props.navigation.navigate('LoginPage');
   };
@@ -27,10 +48,18 @@ class ForgotPasswordPage extends Component{
         </TouchableOpacity>
         <Text style={styles.title}> Forgot Password </Text>
         <Text style={styles.emailText}>Email</Text>
-        <TextInput style={styles.inputEmail}/>
+        <TextInput
+          style={styles.inputEmail}
+          onChangeText={(text) => this.setState({emailText: text})}
+          value={this.state.changeEmail}
+        />
         <Text style={styles.passwordText}>New Password</Text>
-        <TextInput style={styles.inputPassword}/>
-        <TouchableOpacity style={styles.enter_bttn} onPress={()=>this.backFunction()}>
+        <TextInput
+          style={styles.inputPassword}
+          onChangeText={(text) => this.setState({passwordText: text})}
+          value={this.state.changePassword}
+        />
+        <TouchableOpacity style={styles.enter_bttn} onPress={()=>this.ChangePasswordFunction()}>
           <Text style={styles.bttn_text}>Enter</Text>
         </TouchableOpacity>
       </View>
