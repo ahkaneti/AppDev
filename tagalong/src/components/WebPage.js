@@ -7,11 +7,12 @@
  */
 //Import statements
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert, Modal} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert} from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
 import SocketIOClient from 'socket.io-client';
+
 
 
 //API set up and variables
@@ -126,7 +127,6 @@ constructor(props){
 
 watchID = null
 
-
 //Getting Initial Location
 componentDidMount(){
   //Requesting user authorization of location
@@ -177,12 +177,91 @@ componentDidMount(){
       longitude: long
     }
     this.socket.emit('shareLocation', loc)
+
     this.setState({userPosition: newpos})
+
+    web.forEach(function(friend){
+      if ((friend[0] - newpos["latitude"])^2 + (friend[0] - newpos["longitude"])^2 >= 0.0005){
+
+          this.setState({text: "You have left the path"})
+
+          //Sending alert
+          const message = {
+            name: firstname,
+            msg: "Alert - Out of web",
+            latitude: lat,
+            longitude: long
+          };
+          this.socket.emit('message', message);
+      };
+    });
+
+    if(started==true){
+      for(var friend in web){
+        if(Math.sqrt(Math.pow((this.web[friend][0]-lat),2)+Math.pow((this.web[friend][1]-long),2))<.0001){
+          inpath = true;
+        }}
+        if(inpath){
+          this.setState({text: "You are on path"})
+        }
+        else{
+          this.setState({text: "You have left the path"})
+
+          //Sending alert
+          const message = {
+            name: firstname,
+            msg: "Alert - Out of web",
+            latitude: lat,
+            longitude: long
+          };
+          this.socket.emit('message', message);
+        }
+      var lastRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: .1,
+        longitudeDelta: .1,
+      }
+      if(changeDelta){
+      this.setState({Region: lastRegion});
+      changeDelta = false;
+    }
+    }
+    else{
+      this.setState({directionPos: newpos})
+    }
+
     },
     (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: false, timeout: 5000, maximumAge: 0, distanceFilter: 1});
   }
 
+
+//Dragging Marker and updating the position
+onDragMarker(e){
+  console.log('hello');
+  this.setState({destinationPos:e.nativeEvent.coordinate});
+  //Getting the address of the new location for Display
+  Geocoder.geocodePosition({lat: e.nativeEvent.coordinate.latitude,
+                            lng: e.nativeEvent.coordinate.longitude}).then(res=> {this.setState({text:JSON.stringify(res[0].formattedAddress)})});
+}
+
+
+//Look up location Button $
+onPress(text){
+  //Converting Adress into lat and long and changing the text in search bar
+  Geocoder.geocodeAddress(text).then(res=>{this.setState({destinationPos: text,
+                                                          destinationPos:{latitude:res[0].position.lat,
+                                                               longitude:res[0].position.lng}})});
+}
+
+
+//Start walk button
+onPress2(arr,userPosition){
+  started = true;
+  pathArray = arr;
+  changeDelta = false;
+}
 
 componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
@@ -215,6 +294,13 @@ componentWillUnmount() {
             <View style={styles.locationMarker}/>
           </View>
         </MapView.Marker>
+        {/*Location of the destination*/}
+        <MapView.Marker
+          coordinate= {destinationPos}
+          title={"Destination"}
+          draggable
+          onDragEnd={(e) => this.onDragMarker(e)}
+        />
       </MapView>
       <TouchableOpacity style={styles.startbttn} onPress={()=> this.modalFunction()}>
         <Text style={styles.starttext}>Start</Text>
@@ -242,13 +328,12 @@ componentWillUnmount() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   map: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   searchcontainer: {
     position:'relative',
