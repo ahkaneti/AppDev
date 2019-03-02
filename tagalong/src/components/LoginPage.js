@@ -23,11 +23,22 @@ class LoginPage extends Component{
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
-  }
+  };
 
   LoginFunction(){
     console.log(this.state);
     this.props.navigation.navigate('Tabs');
+    return fetch('http://localhost:8000/login', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password,
+        }),
+        });
   };
   ForgotFunction(){
     this.props.navigation.navigate('ForgotPasswordPage');
