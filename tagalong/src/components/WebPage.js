@@ -7,7 +7,11 @@
  */
 //Import statements
 import React, {Component} from 'react';
+<<<<<<< HEAD
 import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Modal} from 'react-native';
+=======
+import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert} from 'react-native';
+>>>>>>> 135f7b5e02088ea41e310c96cabacb73166fd422
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
@@ -58,7 +62,7 @@ constructor(props){
 
   //Let the server know who got connected
   const msg = {
-    username: "username",
+    name: "username",
     message: "Connected.",
     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
   };
@@ -67,12 +71,14 @@ constructor(props){
   //On data receive
   this.socket.on('status', (data) => {
       console.log(data.msg);
+      if (data.msg == "Alert - Out of path" OR data.msg == "Alert - Out of designated area" )
+      {
+        Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
+      }
     });
   this.socket.on('newUser', (data) => {
-    for (let content of data)
-    {
-      this.web[content.username] = [content.lattitude, content.longitude];
-    }
+      this.web[data.first_name] = [data.latitude, data.longitude];
+      console.log(data.first_name, this.web);
   });
 }
 
@@ -95,11 +101,11 @@ componentDidMount(){
       longitudeDelta: .007,
     }
 
-    //Sending initial lattitude and longitude
+    //Sending initial latitude and longitude
     const loc = {
       name: "username",
-      message: "Sending current location.",
-      lattitude: lat,
+      message: "Initial location - WebPage",
+      latitude: lat,
       longitude: long
     }
     this.socket.emit('shareLocation', loc)
@@ -120,11 +126,11 @@ componentDidMount(){
       longitude: long,
     }
 
-    //Sending lattitude and longitude
+    //Sending latitude and longitude
     const loc = {
       name: "username",
-      message: "Sending current location.",
-      lattitude: lat,
+      message: "Update current location - WebPage",
+      latitude: lat,
       longitude: long
     }
     this.socket.emit('shareLocation', loc)
@@ -178,6 +184,7 @@ componentWillUnmount() {
     let directionArray = this.state.directionArray;
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
+    console.disableYellowBox = true;
     let Showme = this.state.Showme;
     return (
       //Setting up the map view
