@@ -25,13 +25,26 @@ var started = false;
 var directionArrayay = [];
 //Keeps track of when Delta/Zoom needs to change
 var changeDelta = false;
-
+var firstname = "FIRST_NAME";
 
 class WalkPage extends Component<Props> {
 
 constructor(props){
   super(props);
 
+  firstname = fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/secure/profile?secret_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleXJhbW9zQHlhaG9vLmNvbSJ9LCJpYXQiOjE1NTE1MTA1MDh9.WOYEa9xFWED0izLb29taasorMokfUJmyBpRUDD-7D-Y', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => response.json())
+      .then((responseJson)=> {
+        return responseJson.first_name;
+      })
+      .catch((error)=> {
+        console.error(error);
+      });
   //Setting initial variables
   this.state = {
     //The coordinates of where your direction path starts, changes until with you location until you click start
@@ -56,7 +69,7 @@ constructor(props){
 
   //Let the server know who got connected
   const msg = {
-    name: "username",
+    name: firstname,
     message: "Connected.",
     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
   };
@@ -65,7 +78,7 @@ constructor(props){
   //On data receive
   this.socket.on('status', (data) => {
       console.log(data.msg);
-      if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ))
+      if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ) || (data.msg == "Alert - Out of web"))
       {
         Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
       }
@@ -110,7 +123,7 @@ componentDidMount(){
 
     if(started==true){
       for(var i=0; i<pathArray.length; i++){
-        if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0005){
+        if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0001){
           inpath = true;
         }}
         if(inpath){
@@ -120,7 +133,7 @@ componentDidMount(){
           this.setState({text: "You have left the path"});
           //Sending alert
           const message = {
-            name: "username",
+            name: firstname,
             msg: "Alert - Out of path",
             latitude: lat,
             longitude: long
@@ -264,7 +277,7 @@ const styles = StyleSheet.create({
     width: 40,
   },
   startbttn: {
-    marginTop: 600,
+    marginTop: 500,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -282,7 +295,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 20,
+    fontSize: 15,
   },
   input: {
     marginTop: 10,

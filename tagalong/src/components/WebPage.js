@@ -26,15 +26,54 @@ var directionArrayay = [];
 //Keeps track of when Delta/Zoom needs to change
 var changeDelta = false;
 
-var norrisLat = 42.053420;
-var norrisLong = -87.672748;
-
+var norrisLat = 42.057984;//42.053420;
+var norrisLong = -87.676233;//-87.672748;
+var firstname = "FIRST_NAME";
+var friends = [];
+var web = {};
 
 class WebPage extends Component<Props> {
 
 constructor(props){
   super(props);
 
+  firstname = fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/secure/profile?secret_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleXJhbW9zQHlhaG9vLmNvbSJ9LCJpYXQiOjE1NTE1MTA1MDh9.WOYEa9xFWED0izLb29taasorMokfUJmyBpRUDD-7D-Y', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => response.json())
+      .then((responseJson)=> {
+        return responseJson.first_name;
+      })
+      .catch((error)=> {
+        console.error(error);
+      });
+
+  friends = ["friend1", "friend2"];
+  /*console.log(fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/secure/getFriends?secret_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleXJhbW9zQHlhaG9vLmNvbSJ9LCJpYXQiOjE1NTE1MTA1MDh9.WOYEa9xFWED0izLb29taasorMokfUJmyBpRUDD-7D-Y', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then((response) => response.json())
+      .then((responseJson)=> {
+        return responseJson[0].Friend;
+      })
+      .catch((error)=> {
+        console.error(error);
+      }));*/
+
+  console.log(friends);
+
+  var inc = 0;
+  var step = 0.00002;
+  friends.forEach(function(friend) {
+    web[friend] = [norrisLat + (inc - 2)*step, norrisLong + (inc - 2)*step];
+    inc = inc + 1;
+  });
   //Setting initial variables
   this.state = {
     //The coordinates of where your direction path starts, changes until with you location until you click start
@@ -60,23 +99,22 @@ constructor(props){
 
   //Let the server know who got connected
   const msg = {
-    name: "username",
+    name: firstname,
     message: "Connected.",
     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
   };
   this.socket.emit('shareUser', msg);
-  this.web = {};
   //On data receive
   this.socket.on('status', (data) => {
       console.log(data.msg);
-      if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ))
+      if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ) || (data.msg == "Alert - Out of web"))
       {
         Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
       }
     });
   this.socket.on('newUser', (data) => {
-      //this.web[data.first_name] = [data.latitude, data.longitude];
-      console.log(data.first_name, this.web);
+      //web[data.first_name] = [data.latitude, data.longitude];
+      console.log(data.first_name, web);
   });
 }
 
@@ -101,7 +139,7 @@ componentDidMount(){
 
     //Sending initial latitude and longitude
     const loc = {
-      name: "username",
+      name: firstname,
       message: "Initial location - WebPage",
       latitude: lat,
       longitude: long
@@ -126,7 +164,7 @@ componentDidMount(){
 
     //Sending latitude and longitude
     const loc = {
-      name: "username",
+      name: firstname,
       message: "Update current location - WebPage",
       latitude: lat,
       longitude: long
@@ -136,8 +174,8 @@ componentDidMount(){
     this.setState({userPosition: newpos})
 
     if(started==true){
-      for(var i=0; i<pathArray.length; i++){
-        if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0001){
+      for(var friend in web){
+        if(Math.sqrt(Math.pow((this.web[friend][0]-lat),2)+Math.pow((this.web[friend][1]-long),2))<.0001){
           inpath = true;
         }}
         if(inpath){
@@ -145,6 +183,15 @@ componentDidMount(){
         }
         else{
           this.setState({text: "You have left the path"})
+
+          //Sending alert
+          const message = {
+            name: firstname,
+            msg: "Alert - Out of web",
+            latitude: lat,
+            longitude: long
+          };
+          this.socket.emit('message', message);
         }
       var lastRegion = {
         latitude: lat,
