@@ -68,8 +68,8 @@ constructor(props){
       console.log(data.msg);
     });
   this.socket.on('newUser', (data) => {
-      this.web[data.username] = [data.latitude, data.longitude];
-      console.log(this.web);
+      this.web[data.first_name] = [data.latitude, data.longitude];
+      console.log(data.first_name, this.web);
   });
 }
 
@@ -197,6 +197,7 @@ componentWillUnmount() {
     let directionArray = this.state.directionArray;
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
+    console.disableYellowBox = true;
     return (
       //Setting up the map view
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>

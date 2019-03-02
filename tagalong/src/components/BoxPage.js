@@ -46,6 +46,7 @@ class BoxPage extends Component{
       message: "Connected.",
       token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
     };
+    this.socket.emit('shareUser', msg);
   }
 
   watchID = null
@@ -153,6 +154,8 @@ class BoxPage extends Component{
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
     let polygonArray = this.state.polygonArray;
+    console.disableYellowBox = true;
+    
     return (
       //Setting up the map view
       <View style={styles.container}>
