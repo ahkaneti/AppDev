@@ -17,7 +17,7 @@ class ProfilePage extends Component{
 
   componentDidMount() {
     console.log(this.state);
-    return fetch(`https://bradleyramos-login-boiler-plate-2.glitch.me/profile?secret_token=${global.token}`, {
+    fetch(`https://bradleyramos-login-boiler-plate-2.glitch.me/secure/profile?secret_token=${global.token}`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -33,7 +33,7 @@ class ProfilePage extends Component{
         .catch((error)=> {
           console.error(error);
         });
-  }
+  };
 
   SignOutFunction(){
     this.props.navigation.navigate('CreateLoginPage');
