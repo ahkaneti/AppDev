@@ -29,7 +29,6 @@ class WalkPage extends Component<Props> {
 
 constructor(props){
   super(props);
-<<<<<<< HEAD
 
   firstname = fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/secure/profile?secret_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleXJhbW9zQHlhaG9vLmNvbSJ9LCJpYXQiOjE1NTE1MTA1MDh9.WOYEa9xFWED0izLb29taasorMokfUJmyBpRUDD-7D-Y', {
         method: 'GET',
@@ -44,8 +43,6 @@ constructor(props){
       .catch((error)=> {
         console.error(error);
       });
-=======
->>>>>>> 06098a2a405f217e93d437b695761adee2fc357a
   //Setting initial variables
   this.state = {
     //The coordinates of where your direction path starts, changes until with you location until you click start
@@ -266,7 +263,7 @@ const styles = StyleSheet.create({
     width: 40,
   },
   startbttn: {
-    marginTop: 500,
+    marginTop: 600,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
