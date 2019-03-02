@@ -7,7 +7,7 @@
  */
 //Import statements
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert, Modal} from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
@@ -328,12 +328,13 @@ componentWillUnmount() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
   },
   searchcontainer: {
     position:'relative',
@@ -408,8 +409,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 30,
-
+    fontSize: 20,
   },
   addPage:{
     backgroundColor: 'white',

@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 15,
+    fontSize: 20,
   },
   input: {
     marginTop: 10,

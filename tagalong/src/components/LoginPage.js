@@ -8,7 +8,7 @@
  */
 
 import React, { Component } from 'react';
-import {Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity, Modal, Alert} from 'react-native';
 import { saveUserToken } from '../redux/actions';
 import { getUserToken } from '../redux/actions';
 
@@ -74,7 +74,7 @@ class LoginPage extends Component{
         <TextInput style={styles.password_entry} secureTextEntry={true} password={true} onChangeText={this.handlePasswordChange} value={this.state.password}/>
         <TouchableOpacity style={styles.login_bttn} onPress={() => {
           this.LoginFunction();
-          //this.props.navigation.navigate('Tabs');
+          this.props.navigation.navigate('Tabs');
         }}>
             <Text style={styles.bttn_text}>Login</Text>
         </TouchableOpacity>
