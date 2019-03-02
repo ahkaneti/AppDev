@@ -68,10 +68,8 @@ constructor(props){
       console.log(data.msg);
     });
   this.socket.on('newUser', (data) => {
-    for (let content of data)
-    {
-      this.web[content.username] = [content.lattitude, content.longitude];
-    }
+      this.web[data.username] = [data.latitude, data.longitude];
+      console.log(this.web);
   });
 }
 
@@ -94,11 +92,11 @@ componentDidMount(){
       longitudeDelta: .007,
     }
 
-    //Sending initial lattitude and longitude
+    //Sending initial latitude and longitude
     const loc = {
       name: "username",
-      message: "Sending current location.",
-      lattitude: lat,
+      message: "Initial location - WebPage",
+      latitude: lat,
       longitude: long
     }
     this.socket.emit('shareLocation', loc)
@@ -119,11 +117,11 @@ componentDidMount(){
       longitude: long,
     }
 
-    //Sending lattitude and longitude
+    //Sending latitude and longitude
     const loc = {
       name: "username",
-      message: "Sending current location.",
-      lattitude: lat,
+      message: "Update current location - WebPage",
+      latitude: lat,
       longitude: long
     }
     this.socket.emit('shareLocation', loc)

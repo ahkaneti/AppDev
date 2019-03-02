@@ -3,6 +3,7 @@ import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, Ani
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
+import SocketIOClient from 'socket.io-client';
 
 
 type Props = {};
@@ -37,23 +38,14 @@ class BoxPage extends Component{
     };
 
     //Setting up socket
-    /*
-    this.socket = SocketIOClient("https://bradleyramos-login-boiler-plate.glitch.me");
+    this.socket = SocketIOClient("https://luminous-magic-1.glitch.me");
 
     //Let the server know who got connected
     const msg = {
       username: "username",
-      message: "Connected."
+      message: "Connected.",
+      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
     };
-    this.socket.emit('message', msg);
-
-    //On data receive
-    this.socket.on('send', (data) => {
-      for (let content of data)
-      {
-        console.log(content);
-      }
-    });*/
   }
 
   watchID = null
@@ -74,16 +66,18 @@ class BoxPage extends Component{
         latitudeDelta: .007,
         longitudeDelta: .007,
       }
+
+      //Sending initial latitude and longitude
+      const loc = {
+        name: "username",
+        message: "Initial location - BoxPage",
+        latitude: lat,
+        longitude: long
+      }
+      this.socket.emit('shareLocation', loc)
+
       //updating the user position and region
       this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
-      //Sending lattitude and longitude
-      const loc = {
-        username: "username",
-        message: "Sending current location.",
-        lattitude: lat,
-        longitude: long
-      };
-      //this.socket.emit('location', loc);
 
     });
     //Updating user position as they move
@@ -96,6 +90,15 @@ class BoxPage extends Component{
         latitude: lat,
         longitude: long,
       }
+      //Updating latitude and longitude
+      const loc = {
+        name: "username",
+        message: "Updating current location - BoxPage",
+        latitude: lat,
+        longitude: long
+      }
+      this.socket.emit('shareLocation', loc)
+
       this.setState({userPosition: newpos})
       _isInPolygon = (newpos, polygonArray) => {
 
@@ -186,8 +189,8 @@ const styles = StyleSheet.create({
   },
   clearbttn:{
     alignSelf: 'flex-end',
-    marginRight: 7.5,
-    marginTop: 15,
+    marginRight: 10,
+    marginTop: 10,
     alignItems:'center',
     justifyContent:'center',
     width: 40,
@@ -202,11 +205,12 @@ const styles = StyleSheet.create({
   cleartext:{
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 25,
+    fontSize: 20,
+    fontWeight: 'bold',
 
   },
   startbttn:{
-    marginTop: 500,
+    marginTop: 510,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
