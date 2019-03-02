@@ -10,6 +10,7 @@
 import React, { Component } from 'react';
 import {Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
 import { saveUserToken } from '../redux/actions';
+import { getUserToken } from '../redux/actions';
 
 type Props = {};
 class LoginPage extends Component{
@@ -27,7 +28,6 @@ class LoginPage extends Component{
 
   LoginFunction(){
     console.log(this.state);
-    this.props.navigation.navigate('Tabs');
     return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/login', {
         method: 'POST',
         headers: {
@@ -38,14 +38,26 @@ class LoginPage extends Component{
           email: this.state.email,
           password: this.state.password,
         }),
+        }).then((response) => response.json())
+        .then((responseJson)=> {
+          console.log(responseJson);
+          //this.props.saveUserToken(responseJson.first_name);
+        })
+        .catch((error)=> {
+          console.error(error);
         });
+
+        // .then(function(response) => {
+        //   this.props.saveUserToken(response.json().token);
+        //   console.log(response.json().token);
+        //   console.log(this.props.getUserToken);
+        //   });
   };
   ForgotFunction(){
     this.props.navigation.navigate('ForgotPasswordPage');
   };
   handleEmailChange(text){
     this.setState({email: text});
-    console.log(text);
   };
 
   handlePasswordChange(text){
@@ -57,10 +69,15 @@ class LoginPage extends Component{
       <View style={styles.container}>
         <Text style={styles.logo}>Login</Text>
         <Text style={styles.headers}>Email</Text>
-        <TextInput style={styles.user_entry} value={this.state.email} onChangeText={this.handleEmailChange}/>
+        <TextInput style={styles.user_entry} onChangeText={this.handleEmailChange} value={this.state.email}/>
         <Text style={styles.headers}>Password</Text>
-        <TextInput style={styles.password_entry} secureTextEntry={true} password={true} value={this.state.password} onChangeText={this.handlePasswordChange}/>
-        <TouchableOpacity style={styles.login_bttn} onPress={() => this.LoginFunction()}><Text style={styles.bttn_text}>Login</Text></TouchableOpacity>
+        <TextInput style={styles.password_entry} secureTextEntry={true} password={true} onChangeText={this.handlePasswordChange} value={this.state.password}/>
+        <TouchableOpacity style={styles.login_bttn} onPress={() => {
+          this.LoginFunction();
+          //this.props.navigation.navigate('Tabs');
+        }}>
+            <Text style={styles.bttn_text}>Login</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => this.ForgotFunction()}><Text style={styles.bttn_text}>Forgot Password</Text></TouchableOpacity>
       </View>
     );
