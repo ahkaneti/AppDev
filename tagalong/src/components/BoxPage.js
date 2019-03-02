@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert} from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
@@ -46,7 +46,14 @@ class BoxPage extends Component{
       message: "Connected.",
       token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
     };
-    this.socket.emit('shareUser', msg);
+    this.socket.emit('shareUser', msg);//On data receive
+    this.socket.on('status', (data) => {
+        console.log(data.msg);
+        if (data.msg = "Alert - Out of Path")
+        {
+          Alert.alert("Alert", data.msg + " went out of path!\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
+        }
+      });
   }
 
   watchID = null
@@ -155,7 +162,7 @@ class BoxPage extends Component{
     let directionPos = this.state.directionPos;
     let polygonArray = this.state.polygonArray;
     console.disableYellowBox = true;
-    
+
     return (
       //Setting up the map view
       <View style={styles.container}>

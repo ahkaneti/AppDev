@@ -7,7 +7,7 @@
  */
 //Import statements
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert} from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
@@ -66,6 +66,10 @@ constructor(props){
   //On data receive
   this.socket.on('status', (data) => {
       console.log(data.msg);
+      if (data.msg = "Alert - Out of Path")
+      {
+        Alert.alert("Alert", data.msg + " went out of path!\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
+      }
     });
   this.socket.on('newUser', (data) => {
       this.web[data.first_name] = [data.latitude, data.longitude];
