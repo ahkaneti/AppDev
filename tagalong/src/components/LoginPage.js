@@ -58,6 +58,7 @@ class LoginPage extends Component {
         console.error(error);
       });
 
+
     // .then(function(response) => {
     //   this.props.saveUserToken(response.json().token);
     //   console.log(response.json().token);
@@ -170,4 +171,14 @@ const styles = StyleSheet.create({
   }
 });
 
+// const mapStateToProps = state => ({
+//     token: state.token,
+// });
+
+
+// const mapDispatchToProps = dispatch => ({
+//     saveUserToken: () => dispatch(saveUserToken()),
+// });
+//
+// export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
 export default LoginPage;
