@@ -7,13 +7,13 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
 
 
 type Props = {};
-class CreatePage extends Component{
-  constructor(props){
+class CreatePage extends Component {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -31,48 +31,64 @@ class CreatePage extends Component{
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   };
 
-  RegisterFunction(){
+  RegisterFunction() {
+    console.log(this.state);
+    let password = this.state.password;
+    let email = this.state.email;
+    if (password == '') {
+      password = ' ';
+    }
+    if (email == '') {
+      email = ' ';
+    }
     return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/signup', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          first_name: this.state.first_name,
-          last_name: this.state.last_name,
-          phone_number: this.state.phone_number,
-          email: this.state.email,
-          password: this.state.password,
-        }),
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        phone_number: this.state.phone_number,
+        email: email,
+        password: password,
+      }),
     }).then((response) => response.json())
-    .then((responseJson)=> {
-      if (responseJson.message) {
-        this.props.navigation.navigate('LoginPage');
-      } else {
-        alert(`Error: ${responseJson.errors[1].message}`);
-      }
-    })
-    .catch((error)=> {
-      console.error(error);
-    });
+      .then((responseJson) => {
+        console.log(responseJson);
+        if (responseJson.errors != undefined) {
+          console.log('true, display error now');
+          let errorStr = '';
+          for (let err of responseJson.errors) {
+            errorStr += `${err.message}\n`;
+          }
+          alert(errorStr);
+          return;
+        }
+        this.props.navigation.navigate('AuthentificationPage');
+        return;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  handleFirstNameChange(text){
-    this.setState({first_name: text});
+  handleFirstNameChange(text) {
+    this.setState({ first_name: text });
     console.log(text);
   };
-  handleLastNameChange(text){
-    this.setState({last_name: text});
+  handleLastNameChange(text) {
+    this.setState({ last_name: text });
   };
-  handlePhoneNumberChange(text){
-    this.setState({phone_number: text});
+  handlePhoneNumberChange(text) {
+    this.setState({ phone_number: text });
   };
-  handleEmailChange(text){
-    this.setState({email: text});
+  handleEmailChange(text) {
+    this.setState({ email: text });
   };
-  handlePasswordChange(text){
-    this.setState({password: text});
+  handlePasswordChange(text) {
+    this.setState({ password: text });
   };
 
   render() {
@@ -94,14 +110,14 @@ class CreatePage extends Component{
         <Text style={styles.headers}>Phone Number</Text>
         <TextInput
           style={styles.entry}
-          keyboardType= {'number-pad'}
+          keyboardType={'number-pad'}
           value={this.state.phone_number}
           onChangeText={this.handlePhoneNumberChange}
         />
         <Text style={styles.headers}>Email</Text>
         <TextInput
           style={styles.entry}
-          keyboardType= {'email-address'}
+          keyboardType={'email-address'}
           value={this.state.email}
           onChangeText={this.handleEmailChange}
         />
@@ -113,7 +129,7 @@ class CreatePage extends Component{
           value={this.state.password}
           onChangeText={this.handlePasswordChange}
         />
-        <TouchableOpacity style={styles.login_bttn} onPress = {()=>this.RegisterFunction()}><Text style={styles.bttn_text}>Create</Text></TouchableOpacity>
+        <TouchableOpacity style={styles.login_bttn} onPress={() => this.RegisterFunction()}><Text style={styles.bttn_text}>Create</Text></TouchableOpacity>
       </View>
     );
   }
@@ -161,7 +177,7 @@ const styles = StyleSheet.create({
   },
   signup_link: {
     marginTop: 2,
-    fontSize:12,
+    fontSize: 12,
   },
   headers: {
     marginTop: 20,

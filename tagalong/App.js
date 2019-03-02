@@ -13,6 +13,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider, connect } from 'react-redux';
 import axios from 'axios';
 import axiosMiddleware from 'redux-axios-middleware';
+import MyProvider from './src/redux/provider';
 
 import {createStackNavigator, createBottomTabNavigator, createAppContainer} from 'react-navigation';
 
@@ -108,6 +109,14 @@ const Nav = createStackNavigator({
   }
   });
 
-const App = createAppContainer(Nav);
+const AppContainer = createAppContainer(Nav);
 
-export default App;
+export default class App extends Component {
+  render () {
+    return (
+        <MyProvider>
+          <AppContainer/>
+        </MyProvider>
+    )
+  }
+}
