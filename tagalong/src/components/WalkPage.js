@@ -65,7 +65,7 @@ constructor(props){
   //On data receive
   this.socket.on('status', (data) => {
       console.log(data.msg);
-      if (data.msg == "Alert - Out of path" OR data.msg == "Alert - Out of designated area" )
+      if (data.msg == "Alert - Out of path" || data.msg == "Alert - Out of designated area" )
       {
         Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
       }
@@ -187,7 +187,6 @@ componentWillUnmount() {
     let directionPos = this.state.directionPos;
     console.disableYellowBox = true;
 
-    let Showme = this.state.Showme;
     return (
       //Setting up the map view
       <View style={styles.container}>
@@ -259,17 +258,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#BD9BF7',
     borderRadius: 25,
     alignItems: 'center',
-    shadowColor: 'rgba(0,0,0, .9)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1,
   },
   searchimg:{
     height: 40,
     width: 40,
   },
   startbttn: {
-    marginTop: 600,
+    marginTop: 500,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -287,7 +282,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 20,
+    fontSize: 15,
   },
   input: {
     marginTop: 10,
@@ -322,6 +317,6 @@ const styles = StyleSheet.create({
   navitigationContainter: {
     flexDirection: 'column',
     alignItems: 'center',
-  },
+  }
 });
 export default WalkPage;
