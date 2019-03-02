@@ -110,7 +110,7 @@ componentDidMount(){
 
     if(started==true){
       for(var i=0; i<pathArray.length; i++){
-        if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0001){
+        if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0005){
           inpath = true;
         }}
         if(inpath){
