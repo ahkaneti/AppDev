@@ -25,8 +25,8 @@ var directionArrayay = [];
 //Keeps track of when Delta/Zoom needs to change
 var changeDelta = false;
 
-var norrisLat = 42.057984;//42.053420;
-var norrisLong = -87.676233;//-87.672748;
+var norrisLat = 42.053420;
+var norrisLong = -87.672748;
 var firstname = "FIRST_NAME";
 var friends = [];
 var web = {};
@@ -91,6 +91,12 @@ constructor(props){
       longitude:0,
     },
      Showme: false,
+     onePosition: {latitude:42.05081, longitude: -87.67614},
+     twoPosition: {latitude:0,longitude:0},
+     thirdPosition: {latitude:0,longitude:0},
+     fourthPosition: {latitude:0,longitude:0},
+     fifthPosition: {latitude:0,longitude:0},
+
   };
 
 
@@ -184,6 +190,9 @@ componentWillUnmount() {
   modalFunction(){
      this.setState({Showme: true})
    }
+   closeFunction(){
+    this.setState({Showme: false})
+  }
   render() {
     //Initializing variables
     let destinationPos = this.state.destinationPos;
@@ -192,11 +201,16 @@ componentWillUnmount() {
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
     let Showme = this.state.Showme;
+    let onePosition= this.state.onePosition;
+    let twoPosition= this.state.onePosition;
+    let thirdPosition= this.state.onePosition;
+    let fourthPosition= this.state.onePosition;
+    let fifthPosition= this.state.onePosition;
     console.disableYellowBox = true;
     return (
       <View style={styles.container}>
-      <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation onPress={(e) => this.polygonFunction(e.nativeEvent.coordinate)}>
-        <MapView.Marker coordinate= {userPosition} title={"yo position"}>
+      <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation >
+        <MapView.Marker coordinate= {userPosition} title={"your position"}>
           <View style={styles.radius}>
             <View style={styles.locationMarker}/>
           </View>
@@ -211,15 +225,15 @@ componentWillUnmount() {
               transparent={true}>
           <View style={styles.addPage}>
           <Text style={styles.title}>Add Friend</Text>
-          <TouchableOpacity style={styles.FriendsTop}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Kieran Bondy</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Aaron Kaneti</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Bradley Ramos</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Can Turkay</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Ka Wong</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.FriendsTop} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addaFunction()}>Kieran Bondy</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addbFunction()}>Aaron Kaneti</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addcFunction()}>Bradley Ramos</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.adddFunction()}>Can Turkay</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addeFunction()}>Ka Wong</Text></TouchableOpacity>
           <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
           <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
-          <TouchableOpacity style={styles.FriendsBottom}><Text style={styles.title}>Start Tracking</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.FriendsBottom}><Text style={styles.title} onPress={()=> this.closeFunction()}>Start Tracking</Text></TouchableOpacity>
           </View>
       </Modal>
       </View>
@@ -280,9 +294,9 @@ const styles = StyleSheet.create({
     width: 50,
     borderRadius: 50 / 2,
     overflow: 'hidden',
-    backgroundColor: 'rgba(0,112,255,.1)',
+    backgroundColor: 'rgba(0,122,255,.1)',
     borderWidth: 1,
-    borderColor: 'rgba(0,112,255,.3)',
+    borderColor: 'rgba(0,150,255,.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -309,7 +323,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 20,
+    fontSize: 30,
 
   },
   addPage:{

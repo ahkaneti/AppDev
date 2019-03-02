@@ -204,7 +204,7 @@ componentWillUnmount() {
           onReady={(result) => {this.setState({directionArray:result.coordinates})}}
         />
         {/*User location*/}
-        <MapView.Marker coordinate= {userPosition} title={"yo position"}>
+        <MapView.Marker coordinate= {userPosition} title={"your position"}>
           <View style={styles.radius}>
             <View style={styles.locationMarker}/>
           </View>
