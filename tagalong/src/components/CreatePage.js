@@ -66,7 +66,7 @@ class CreatePage extends Component {
           alert(errorStr);
           return;
         }
-        this.props.navigation.navigate('AuthentificationPage');
+        this.props.navigation.navigate('LoginPage');
         return;
       })
       .catch((error) => {

@@ -79,6 +79,7 @@ class LoginPage extends Component {
   loginAsync = async (saveToken, token) => {
     saveToken(token)
       .then(() => {
+        global.token = token;
         this.props.navigation.navigate('Tabs');
       })
       .catch(() => {
