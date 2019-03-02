@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
     width: 40,
   },
   startbttn: {
-    marginTop: 500,
+    marginTop: 600,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 15,
+    fontSize: 20,
   },
   input: {
     marginTop: 10,

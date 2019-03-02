@@ -7,7 +7,7 @@
  */
 //Import statements
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert, Modal} from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
@@ -49,6 +49,7 @@ constructor(props){
       latitude:0,
       longitude:0,
     },
+    Showme: false,
   };
 
 
@@ -194,6 +195,10 @@ componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
   }
 
+  modalFunction(){
+   this.setState({Showme: true})
+ }
+
   render() {
     //Initializing variables
     let destinationPos = this.state.destinationPos;
@@ -201,79 +206,60 @@ componentWillUnmount() {
     let directionArray = this.state.directionArray;
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
+    let Showme = this.state.Showme;
     console.disableYellowBox = true;
     return (
       //Setting up the map view
+      <View style={styles.container}>
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation>
-        <View style={styles.searchcontainer}>
-          {/*Search bar for entering destination location*/}
-          <TextInput
-            style={styles.input}
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-          />
-          {/*Button for entering desitination location*/}
-          <TouchableOpacity style={styles.enterbttn} onPress={()=>this.onPress(this.state.text)}/>
-        </View>
           {/*Button for user to start their walk*/}
-          <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}/>
 
-        {/*Generating Poly line for user to follow*/}
-        <MapViewDirections
-          origin={directionPos}
-          mode='walking'
-          destination={destinationPos}
-          apikey={GOOGLE_MAPS_APIKEY}
-          strokeWidth={2}
-          strokeColor="#e699ff"
-          onReady={(result) => {this.setState({directionArray:result.coordinates})}}
-        />
         {/*User location*/}
         <MapView.Marker coordinate= {userPosition} title={"yo position"}>
           <View style={styles.radius}>
             <View style={styles.locationMarker}/>
           </View>
         </MapView.Marker>
-        {/*Location of the destination*/}
-        <MapView.Marker
-          coordinate= {destinationPos}
-          title={"Destination"}
-          draggable
-          onDragEnd={(e) => this.onDragMarker(e)}
-        />
       </MapView>
+      <TouchableOpacity style={styles.startbttn} onPress={()=>this.modalFunction()}>
+      <Text style={styles.starttext}>Start</Text>
+      </TouchableOpacity>
+      <Modal visible={this.state.Showme}
+              backdrop={true}
+              style={styles.modal}
+              transparent={true}>
+          <View style={styles.addPage}>
+          <Text style={styles.title}>Add Friends to Web</Text>
+          <TouchableOpacity style={styles.FriendsTop}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Kieran Bondy</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Aaron Kaneti</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Bradley Ramos</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Can Turkay</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Ka Wong</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
+          <TouchableOpacity style={styles.FriendsBottom}><Text style={styles.title}>Start Web</Text></TouchableOpacity>
+
+
+
+          </View>
+      </Modal>
+
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   map: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    ...StyleSheet.absoluteFillObject,
   },
-  searchcontainer: {
-    position:'relative',
-    flexDirection: 'row',
 
-  },
-  enterbttn: {
-    marginLeft: 10,
-    marginTop: 70,
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
-
-  },
-  startbttn: {
-
-    alignSelf: 'baseline',
-    height: 40,
-    width: 40,
-    backgroundColor: '#e699ff',
-  },
   input: {
     marginLeft: 10,
     marginTop: 70,
@@ -307,7 +293,94 @@ const styles = StyleSheet.create({
   navitigationContainter: {
     flexDirection: 'column',
     alignItems: 'center',
-  }
+  },
+  startbttn:{
+    marginTop: 600,
+    marginBottom: 10,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 150,
+    height: 30,
+    backgroundColor: '#BD9BF7',
+    borderRadius: 25,
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
+  },
+  starttext:{
+    textAlign: 'center',
+    fontFamily: 'Verdana',
+    color: 'white',
+    fontSize: 20,
+
+  },
+  addPage:{
+    backgroundColor: 'white',
+    marginTop: 175,
+    marginLeft: 75,
+    width: 230,
+    height: 400,
+    borderRadius: 25,
+    alignItems: 'center',
+    borderWidth: .25,
+    borderColor: 'black',
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
+  },
+  modal:{
+    alignItems: 'center',
+    width:200,
+    height:400,
+    justifyContent: 'center',
+    borderRadius: Platform.OS === 'ios' ? 30:0,
+    shadowRadius: 10,
+  },
+  title: {
+    marginTop: 10,
+    textAlign: 'center',
+    fontFamily: 'Verdana',
+    color: '#BD9BF7',
+    fontSize: 20,
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  FriendsTop: {
+    width:230,
+    height: 40,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    borderTopWidth: 1,
+    borderTopColor: 'gray',
+
+  },
+  Friends: {
+    width:230,
+    height: 40,
+    alignItems:'center',
+    justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+
+  },
+  FriendsBottom: {
+    width:230,
+    height: 40,
+    alignItems:'center',
+    justifyContent: 'center',
+
+  },
+  FriendsText: {
+    textAlign: 'center',
+    fontFamily: 'Verdana',
+    color: '#BD9BF7',
+    fontSize: 20,
+  },
 
 
 });
