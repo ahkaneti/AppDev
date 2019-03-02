@@ -163,9 +163,6 @@ class BoxPage extends Component{
       this.setState({Showme: true})
     }
 
-
-
-
   componentWillUnmount() {
       navigator.geolocation.clearWatch(this.watchId);
     }

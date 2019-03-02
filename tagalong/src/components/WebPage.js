@@ -14,7 +14,6 @@ import Geocoder from 'react-native-geocoder-reborn';
 import SocketIOClient from 'socket.io-client';
 
 
-
 //API set up and variables
 type Props = {};
 //API Key for the google maps API
@@ -132,66 +131,12 @@ componentDidMount(){
       longitude: long
     }
     this.socket.emit('shareLocation', loc)
-
     this.setState({userPosition: newpos})
-
-    if(started==true){
-      for(var i=0; i<pathArray.length; i++){
-        if(Math.sqrt(Math.pow((pathArray[i].latitude-lat),2)+Math.pow((pathArray[i].longitude-long),2))<.0001){
-          inpath = true;
-        }}
-        if(inpath){
-          this.setState({text: "You are on path"})
-        }
-        else{
-          this.setState({text: "You have left the path"})
-        }
-      var lastRegion = {
-        latitude: lat,
-        longitude: long,
-        latitudeDelta: .1,
-        longitudeDelta: .1,
-      }
-      if(changeDelta){
-      this.setState({Region: lastRegion});
-      changeDelta = false;
-    }
-    }
-    else{
-      this.setState({directionPos: newpos})
-    }
-
     },
     (error) => alert(JSON.stringify(error)),
     {enableHighAccuracy: false, timeout: 5000, maximumAge: 0, distanceFilter: 1});
   }
 
-
-//Dragging Marker and updating the position
-onDragMarker(e){
-  console.log('hello');
-  this.setState({destinationPos:e.nativeEvent.coordinate});
-  //Getting the address of the new location for Display
-  Geocoder.geocodePosition({lat: e.nativeEvent.coordinate.latitude,
-                            lng: e.nativeEvent.coordinate.longitude}).then(res=> {this.setState({text:JSON.stringify(res[0].formattedAddress)})});
-}
-
-
-//Look up location Button $
-onPress(text){
-  //Converting Adress into lat and long and changing the text in search bar
-  Geocoder.geocodeAddress(text).then(res=>{this.setState({destinationPos: text,
-                                                          destinationPos:{latitude:res[0].position.lat,
-                                                               longitude:res[0].position.lng}})});
-}
-
-
-//Start walk button
-onPress2(arr,userPosition){
-  started = true;
-  pathArray = arr;
-  changeDelta = false;
-}
 
 componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
