@@ -15,6 +15,7 @@ class CreateLoginPage extends Component{
   };
 
   render(){
+    console.disableYellowBox = true;
     return(
       <View style={styles.container}>
       <Text style={styles.title}> Tagalong </Text>

@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity,Modal, Button} from 'react-native';
 import {RNCamera} from 'react-native-camera';
+=======
+import { Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { MyContext } from '../redux/provider';
+>>>>>>> 814ad98adfe698464e894d1f108960e4ed2859ac
 
 type Props = {};
 
@@ -113,7 +118,7 @@ class ProfilePage extends Component{
         <Text style={styles.phone}>{this.state.phoneText}</Text>
         <TouchableOpacity onPress = {()=>this.SignOutFunction()} style={styles.signOut}><Text style={styles.signOutText}>Sign Out</Text></TouchableOpacity>
       </View>
-      );
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -169,8 +174,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginRight: 7.5,
     marginTop: 37.5,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 40,
     height: 40,
     backgroundColor: '#BD9BF7',
