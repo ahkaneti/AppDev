@@ -92,6 +92,7 @@ class LoginPage extends Component{
         <TextInput style={styles.password_entry} secureTextEntry={true} password={true} onChangeText={this.handlePasswordChange} value={this.state.password}/>
         <TouchableOpacity style={styles.login_bttn} onPress={() => {
           this.LoginFunction();
+          this.props.navigation.navigate('Tabs');
         }}>
             <Text style={styles.bttn_text}>Login</Text>
         </TouchableOpacity>
