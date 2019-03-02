@@ -42,16 +42,18 @@ class BoxPage extends Component{
 
     //Let the server know who got connected
     const msg = {
-      username: "username",
+      name: "username",
       message: "Connected.",
       token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
     };
-    this.socket.emit('shareUser', msg);//On data receive
+    this.socket.emit('shareUser', msg);
+
+    //On data receive
     this.socket.on('status', (data) => {
         console.log(data.msg);
-        if (data.msg = "Alert - Out of Path")
+        if (data.msg == "Alert - Out of path" OR data.msg == "Alert - Out of designated area" )
         {
-          Alert.alert("Alert", data.msg + " went out of path!\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
+          Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
         }
       });
   }
@@ -128,6 +130,17 @@ class BoxPage extends Component{
   if(inside){
     var temp = [];
     this.setState({polygonArray: temp});
+  }
+  else
+  {
+    //Sending alert
+    const message = {
+      name: "username",
+      msg: "Alert - Out of designated area",
+      latitude: lat,
+      longitude: long
+    };
+    this.socket.emit('message', message);
   }
  },
       (error) => alert(JSON.stringify(error)),
