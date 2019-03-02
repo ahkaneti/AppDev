@@ -53,6 +53,7 @@ class BoxPage extends Component{
         longitude:0,
       },
       Showme: false,
+      poPosition: {latitude: 0, longitude: 0}
     };
 
     //Setting up socket
@@ -146,8 +147,7 @@ class BoxPage extends Component{
     return inside
   }
   if(inside){
-    var temp = [];
-    this.setState({polygonArray: temp});
+
   }
   else
   {
@@ -178,6 +178,10 @@ class BoxPage extends Component{
     modalFunction(){
      this.setState({Showme: true})
    }
+   closeFunction(){
+    this.setState({Showme: false})
+    this.setState({poPosition: {latitude:42.05081, longitude: -87.67614}})
+  }
 
 
 
@@ -194,6 +198,7 @@ class BoxPage extends Component{
     let directionPos = this.state.directionPos;
     let polygonArray = this.state.polygonArray;
     let showme = this.state.Showme;
+    let poPosition = this.state.poPosition;
     console.disableYellowBox = true;
 
     return (
@@ -204,7 +209,7 @@ class BoxPage extends Component{
                          fillColor="rgba(189, 155, 247, 0.5)"
                          strokeColor="rgba(0,0,0,0.5)"
                          strokeWidth={2}/>
-        <MapView.Marker coordinate= {userPosition} title={"yo position"}>
+        <MapView.Marker coordinate= {poPosition} title={"Friend's position"}>
           <View style={styles.radius}>
             <View style={styles.locationMarker}/>
           </View>
@@ -222,15 +227,15 @@ class BoxPage extends Component{
               transparent={true}>
           <View style={styles.addPage}>
           <Text style={styles.title}>Add Friend</Text>
-          <TouchableOpacity style={styles.FriendsTop}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Kieran Bondy</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Aaron Kaneti</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Bradley Ramos</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Can Turkay</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Ka Wong</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.FriendsTop} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>Kieran Bondy</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>Aaron Kaneti</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>Bradley Ramos</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>Can Turkay</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>Ka Wong</Text></TouchableOpacity>
           <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
           <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
-          <TouchableOpacity style={styles.FriendsBottom}><Text style={styles.title}>Start Tracking</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.FriendsBottom}><Text style={styles.title}></Text></TouchableOpacity>
           </View>
       </Modal>
       </View>
@@ -298,16 +303,16 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 20 / 2,
     overflow: 'hidden',
-    backgroundColor: '#007AFF'
+    backgroundColor: 'red'
   },
   radius: {
     height: 50,
     width: 50,
     borderRadius: 50 / 2,
     overflow: 'hidden',
-    backgroundColor: 'rgba(0,112,255,.1)',
+    backgroundColor: 'rgba(255,112,0,.1)',
     borderWidth: 1,
-    borderColor: 'rgba(0,112,255,.3)',
+    borderColor: 'rgba(255,112,0,.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },

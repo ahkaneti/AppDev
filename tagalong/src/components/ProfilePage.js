@@ -3,18 +3,31 @@ import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} fr
 
 type Props = {};
 
+let dict;
+
 class ProfilePage extends Component{
+  constructor(props){
+    super(props);
+    this.state={
+      nameText: "",
+      emailText: "",
+      phoneText: "",
+    }};
+
+
   SignOutFunction(){
     this.props.navigation.navigate('CreateLoginPage');
   };
+
+
   render(){
     return(
       <View style={styles.container}>
         <TouchableOpacity style={styles.edit}><Image style={{width: 40, height: 40}} source={require('../../images/gear.png')}/></TouchableOpacity>
         <Image style={styles.profile} source={require('../../images/Profileimg.png')}/>
-        <Text style={styles.name}>John Wick</Text>
-        <Text style={styles.email}>jwick@killer.com</Text>
-        <Text style={styles.phone}>911-911-9110</Text>
+        <Text style={styles.name}>Bradly Ramos</Text>
+        <Text style={styles.email}>bradleyramos@yahoo.com</Text>
+        <Text style={styles.phone}>224-545-8491</Text>
         <TouchableOpacity onPress = {()=>this.SignOutFunction()} style={styles.signOut}><Text style={styles.signOutText}>Sign Out</Text></TouchableOpacity>
       </View>
       );
