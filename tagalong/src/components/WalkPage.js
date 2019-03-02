@@ -11,7 +11,7 @@ import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, Ani
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
-//import SocketIOClient from 'socket.io-client';
+import SocketIOClient from 'socket.io-client';
 
 
 
@@ -52,23 +52,15 @@ constructor(props){
   };
 
   //Setting up socket
-  /*
-  this.socket = SocketIOClient("https://bradleyramos-login-boiler-plate.glitch.me");
+  this.socket = SocketIOClient("https://luminous-magic-1.glitch.me");
 
   //Let the server know who got connected
   const msg = {
     username: "username",
-    message: "Connected."
+    message: "Connected.",
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
   };
-  this.socket.emit('message', msg);
-
-  //On data receive
-  this.socket.on('send', (data) => {
-    for (let content of data)
-    {
-      console.log(content);
-    }
-  });*/
+  this.socket.emit('shareUser', msg);
 }
 
 watchID = null
@@ -91,14 +83,7 @@ componentDidMount(){
     }
     //updating the user position and region
     this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
-    //Sending lattitude and longitude
-    const loc = {
-      username: "username",
-      message: "Sending current location.",
-      lattitude: lat,
-      longitude: long
-    };
-    //this.socket.emit('location', loc);
+
 
   });
   //Updating user position as they move
@@ -123,7 +108,15 @@ componentDidMount(){
           this.setState({text: "You are on path"})
         }
         else{
-          this.setState({text: "You have left the path"})
+          this.setState({text: "You have left the path"});
+          //Sending alert
+          const message = {
+            name: "username",
+            msg: "Alert - Out of Path",
+            latitude: lat,
+            longitude: long
+          };
+          this.socket.emit('message', message);
         }
       var lastRegion = {
         latitude: lat,
@@ -247,7 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   enterbttn: {
-    marginTop: 5,
+    marginTop: 10,
     marginLeft: 10,
     justifyContent: 'center',
     width: 40,
@@ -255,10 +248,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#BD9BF7',
     borderRadius: 25,
     alignItems: 'center',
-    shadowColor: 'rgba(0,0,0, .9)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1,
   },
   searchimg:{
     height: 40,
@@ -283,10 +272,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 20,
+    fontSize: 15,
   },
   input: {
-    marginTop: 5,
+    marginTop: 10,
     marginLeft: 10,
     height: 40,
     width: 300,
