@@ -176,7 +176,7 @@ componentWillUnmount() {
     let directionArray = this.state.directionArray;
     let userPosition = this.state.userPosition;
     let directionPos = this.state.directionPos;
-
+    let Showme = this.state.Showme;
     return (
       //Setting up the map view
       <View style={styles.container}>
@@ -248,13 +248,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#BD9BF7',
     borderRadius: 25,
     alignItems: 'center',
+    shadowColor: 'rgba(0,0,0, .9)', // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1,
   },
   searchimg:{
     height: 40,
     width: 40,
   },
   startbttn: {
-    marginTop: 500,
+    marginTop: 600,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -272,7 +276,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Verdana',
     color: 'white',
-    fontSize: 15,
+    fontSize: 20,
   },
   input: {
     marginTop: 10,
@@ -307,6 +311,6 @@ const styles = StyleSheet.create({
   navitigationContainter: {
     flexDirection: 'column',
     alignItems: 'center',
-  }
+  },
 });
 export default WalkPage;
