@@ -17,7 +17,7 @@ class CreateLoginPage extends Component{
   render(){
     return(
       <View style={styles.container}>
-      <Text> Tagalong </Text>
+      <Text style={styles.title}> Tagalong </Text>
         <TouchableOpacity style ={styles.LoginButton} onPress={()=> this.LoginPageFunction()}><Text style ={styles.LoginText}>Login</Text></TouchableOpacity>
         <TouchableOpacity style = {styles.CreateButton} onPress={()=> this.CreatePageFunction()}><Text style ={styles.CreateText}>Create Account</Text></TouchableOpacity>
       </View>
@@ -33,12 +33,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#BD9BF7',
   },
+  title: {
+    textAlign: 'center',
+    fontFamily: 'Verdana',
+    color: 'white',
+    fontSize: 50,
+  },
   LoginButton: {
-      marginTop: 10,
+      marginTop: 40,
       alignItems: 'center',
       justifyContent: 'center',
       width: 150,
-      height: 60,
+      height: 50,
       backgroundColor: '#AF8CEA',
       borderRadius: 25,
       shadowColor: 'rgba(0,0,0, .9)', // IOS
@@ -52,11 +58,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   CreateButton: {
-      marginTop: 10,
+      marginTop: 25,
       alignItems: 'center',
       justifyContent: 'center',
       width: 150,
-      height: 60,
+      height: 50,
       backgroundColor: '#AF8CEA',
       borderRadius: 25,
       shadowColor: 'rgba(0,0,0, .9)', // IOS

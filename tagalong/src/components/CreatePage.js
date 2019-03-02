@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 150,
-    height: 60,
+    height: 50,
     backgroundColor: '#AF8CEA',
     borderRadius: 25,
     shadowColor: 'rgba(0,0,0, .9)', // IOS
