@@ -35,7 +35,31 @@ class ProfilePage extends Component{
         });
   };
 
+  uploadAvatarFunction() {
+    return fetch(`https://bradleyramos-login-boiler-plate-2.glitch.me/secure/uploadAvatar?secret_token=${global.token}`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: this.state.email,
+          password: this.state.password,
+        }),
+        }).then((response) => response.json())
+        .then((responseJson)=> {
+            this.setState({firstnameText: responseJson.first_name});
+            this.setState({lastnameText: responseJson.last_name})
+            this.setState({emailText: responseJson.email})
+            this.setState({phoneText: responseJson.phone_number})
+        })
+        .catch((error)=> {
+          console.error(error);
+        });
+  }
+
   SignOutFunction(){
+    global.token = '';
     this.props.navigation.navigate('CreateLoginPage');
   };
 
@@ -45,9 +69,9 @@ class ProfilePage extends Component{
       <View style={styles.container}>
         <TouchableOpacity style={styles.edit}><Image style={{width: 40, height: 40}} source={require('../../images/gear.png')}/></TouchableOpacity>
         <Image style={styles.profile} source={require('../../images/Profileimg.png')}/>
-        <Text style={styles.name}>Bradley Ramos</Text>
-        <Text style={styles.email}>bradleyramos@yahoo.com</Text>
-        <Text style={styles.phone}>224-545-8491</Text>
+        <Text style={styles.name}>{`${this.state.firstnameText} ${this.state.lastnameText}`}</Text>
+        <Text style={styles.email}>{this.state.emailText}</Text>
+        <Text style={styles.phone}>{this.state.phoneText}</Text>
         <TouchableOpacity onPress = {()=>this.SignOutFunction()} style={styles.signOut}><Text style={styles.signOutText}>Sign Out</Text></TouchableOpacity>
       </View>
       );
