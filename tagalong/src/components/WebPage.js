@@ -22,10 +22,10 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyCSFIWbcI5EGJtJSrFXh-4WfrtgzdICDFg';
 //Variable keeps track if the walk has started
 var started = false;
 //Holds the generated walking path so we can verify that a user is following the path
-var directionArrayay = [];
+var lineArray = [];
 //Keeps track of when Delta/Zoom needs to change
 var changeDelta = false;
-
+var op = 0.0;
 var norrisLat = 42.053420;
 var norrisLong = -87.672748;
 var firstname = "FIRST_NAME";
@@ -84,6 +84,7 @@ constructor(props){
     directionArray:[],
     //The coordinate of your destination
     destinationPos:{latitude: 0, longitude:0},
+    destinationPos2:{latitude: 0, longitude:0},
     //The region of the map that should be focused on
     Region: null,
     //The position of the user
@@ -154,7 +155,7 @@ componentDidMount(){
     this.socket.emit('shareLocation', loc)
 
     //updating the user position and region
-    this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long}, destinationPos:{latitude: lat + .001, longitude:long + .001}})
+    this.setState({Region: lastRegion, directionPos:{latitude: lat, longitude:long},destinationPos:{latitude: lat + .0009, longitude:long + .0012},destinationPos2:{latitude: lat, longitude:long + .0015}})
 
 
   });
@@ -180,7 +181,7 @@ componentDidMount(){
 
     this.setState({userPosition: newpos})
 
-    web.forEach(function(friend){
+    /*web.forEach(function(friend){
       if ((friend[0] - newpos["latitude"])^2 + (friend[0] - newpos["longitude"])^2 >= 0.0005){
 
           this.setState({text: "You have left the path"})
@@ -194,11 +195,11 @@ componentDidMount(){
           };
           this.socket.emit('message', message);
       };
-    });
+    });*/
 
     if(started==true){
       for(var friend in web){
-        if(Math.sqrt(Math.pow((this.web[friend][0]-lat),2)+Math.pow((this.web[friend][1]-long),2))<.0001){
+        if(Math.sqrt(Math.pow((this.web[friend][0]-lat),2)+Math.pow((this.web[friend][1]-long),2))<.0005){
           inpath = true;
         }}
         if(inpath){
@@ -238,30 +239,11 @@ componentDidMount(){
 
 
 //Dragging Marker and updating the position
-onDragMarker(e){
-  console.log('hello');
-  this.setState({destinationPos:e.nativeEvent.coordinate});
-  //Getting the address of the new location for Display
-  Geocoder.geocodePosition({lat: e.nativeEvent.coordinate.latitude,
-                            lng: e.nativeEvent.coordinate.longitude}).then(res=> {this.setState({text:JSON.stringify(res[0].formattedAddress)})});
-}
+
 
 
 //Look up location Button $
-onPress(text){
-  //Converting Adress into lat and long and changing the text in search bar
-  Geocoder.geocodeAddress(text).then(res=>{this.setState({destinationPos: text,
-                                                          destinationPos:{latitude:res[0].position.lat,
-                                                               longitude:res[0].position.lng}})});
-}
 
-
-//Start walk button
-onPress2(arr,userPosition){
-  started = true;
-  pathArray = arr;
-  changeDelta = false;
-}
 
 componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchId);
@@ -271,10 +253,13 @@ componentWillUnmount() {
    }
    closeFunction(){
     this.setState({Showme: false})
+    op = 1.0
+    lineArray = [this.state.userPosition,this.state.destinationPos, this.state.destinationPos2, this.state.userPosition]
   }
   render() {
     //Initializing variables
     let destinationPos = this.state.destinationPos;
+    let destinationPos2 = this.state.destinationPos2;
     let text = this.state.text;
     let directionArray = this.state.directionArray;
     let userPosition = this.state.userPosition;
@@ -289,6 +274,10 @@ componentWillUnmount() {
     return (
       <View style={styles.container}>
       <MapView style={styles.map} initialRegion={this.state.Region} loadingEnabled showUserLocation followUserLocation >
+        <MapView.Polyline
+        coordinates = {lineArray}
+        lineDashPattern={[5, 15]}/>
+
         <MapView.Marker coordinate= {userPosition} title={"your position"}>
           <View style={styles.radius}>
             <View style={styles.locationMarker}/>
@@ -297,10 +286,22 @@ componentWillUnmount() {
         {/*Location of the destination*/}
         <MapView.Marker
           coordinate= {destinationPos}
-          title={"Destination"}
-          draggable
-          onDragEnd={(e) => this.onDragMarker(e)}
-        />
+          title={"Friend"}
+          opacity={op}
+        >
+        <View style={styles.radius}>
+          <View style={styles.locationMarkerfriend}/>
+        </View>
+        </MapView.Marker>
+        <MapView.Marker
+          coordinate= {destinationPos2}
+          title={"Friend"}
+          opacity={op}
+        >
+        <View style={styles.radius}>
+          <View style={styles.locationMarkerfriend}/>
+        </View>
+        </MapView.Marker>
       </MapView>
       <TouchableOpacity style={styles.startbttn} onPress={()=> this.modalFunction()}>
         <Text style={styles.starttext}>Start</Text>
@@ -311,12 +312,12 @@ componentWillUnmount() {
               transparent={true}>
           <View style={styles.addPage}>
           <Text style={styles.title}>Add Friend</Text>
-          <TouchableOpacity style={styles.FriendsTop} onPress={()=> this.closeFunction()}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addaFunction()}>Kieran Bondy</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addbFunction()}>Aaron Kaneti</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addcFunction()}>Bradley Ramos</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.adddFunction()}>Can Turkay</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} onPress={()=> this.addeFunction()}>Ka Wong</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.FriendsTop}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Kieran Bondy</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} >Aaron Kaneti</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} >Bradley Ramos</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} >Can Turkay</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText} >Ka Wong</Text></TouchableOpacity>
           <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
           <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
           <TouchableOpacity style={styles.FriendsBottom}><Text style={styles.title} onPress={()=> this.closeFunction()}>Start Tracking</Text></TouchableOpacity>
@@ -383,6 +384,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,122,255,.1)',
     borderWidth: 1,
     borderColor: 'rgba(0,150,255,.3)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  locationMarkerfriend: {
+    height: 20,
+    width: 20,
+    borderWidth: 3,
+    borderColor: 'white',
+    borderRadius: 20 / 2,
+    overflow: 'hidden',
+    backgroundColor: '#BD9BF7'
+  },
+  radiusfriend: {
+    height: 50,
+    width: 50,
+    borderRadius: 50 / 2,
+    overflow: 'hidden',
+    backgroundColor: 'rgba(150,0,255,.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(150,0,255,.3)',
     alignItems: 'center',
     justifyContent: 'center',
   },
