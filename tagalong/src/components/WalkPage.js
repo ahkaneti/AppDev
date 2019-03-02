@@ -52,7 +52,7 @@ constructor(props){
   };
 
   //Setting up socket
-  this.socket = SocketIOClient("https://luminous-magic-1.glitch.me");
+  this.socket = SocketIOClient("https://bradleyramos-login-boiler-plate-2.glitch.me");
 
   //Let the server know who got connected
   const msg = {
