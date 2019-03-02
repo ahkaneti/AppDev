@@ -1,4 +1,6 @@
 rootProject.name = 'tagalong'
+include ':react-native-camera'
+project(':react-native-camera').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-camera/android')
 include ':react-native-geo-fencing'
 project(':react-native-geo-fencing').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-geo-fencing/android')
 include ':react-native-gesture-handler'
