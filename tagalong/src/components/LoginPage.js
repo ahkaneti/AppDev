@@ -8,8 +8,8 @@
  */
 
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
-
+import {Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
+import { saveUserToken } from '../redux/actions';
 
 type Props = {};
 class LoginPage extends Component{
@@ -28,7 +28,7 @@ class LoginPage extends Component{
   LoginFunction(){
     console.log(this.state);
     this.props.navigation.navigate('Tabs');
-    return fetch('http://localhost:8000/login', {
+    return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/login, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
