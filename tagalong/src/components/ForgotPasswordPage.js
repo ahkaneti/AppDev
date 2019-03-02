@@ -56,6 +56,8 @@ class ForgotPasswordPage extends Component{
         <Text style={styles.passwordText}>New Password</Text>
         <TextInput
           style={styles.inputPassword}
+          secureTextEntry={true}
+          password={true}
           onChangeText={(text) => this.setState({passwordText: text})}
           value={this.state.changePassword}
         />

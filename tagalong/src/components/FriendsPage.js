@@ -11,6 +11,7 @@ class FriendsPage extends Component{
       text: 'Enter email users email'
     }
   };
+
   addFriend(friend) {
     let id = 62;
     return fetch(`https://bradleyramos-login-boiler-plate-2.glitch.me/addUser/${id}?secret_token=${global.token}`, {
@@ -21,8 +22,7 @@ class FriendsPage extends Component{
         },
         }).then((response) => response.json())
         .then((responseJson)=> {
-          console.log(responseJson);
-          //this.props.saveUserToken(responseJson.first_name);
+          alert('Added successfully!');
         })
         .catch((error)=> {
           console.error(error);

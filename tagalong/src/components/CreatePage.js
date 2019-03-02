@@ -32,9 +32,7 @@ class CreatePage extends Component{
   };
 
   RegisterFunction(){
-    console.log(this.state);
-    this.props.navigation.navigate('AuthentificationPage');
-    return fetch('http://localhost:8000/signup', {
+    return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/signup', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -47,6 +45,16 @@ class CreatePage extends Component{
           email: this.state.email,
           password: this.state.password,
         }),
+    }).then((response) => response.json())
+    .then((responseJson)=> {
+      if (responseJson.message) {
+        this.props.navigation.navigate('LoginPage');
+      } else {
+        alert(`Error: ${responseJson.errors[1].message}`);
+      }
+    })
+    .catch((error)=> {
+      console.error(error);
     });
   };
 
