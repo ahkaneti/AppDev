@@ -65,7 +65,7 @@ constructor(props){
   //On data receive
   this.socket.on('status', (data) => {
       console.log(data.msg);
-      if (data.msg == "Alert - Out of path" || data.msg == "Alert - Out of designated area" )
+      if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ))
       {
         Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
       }

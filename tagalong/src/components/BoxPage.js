@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Modal, Alert} from 'react-native';
+import {Platform, StyleSheet, Text, View, TextInput,TouchableOpacity, Image, AnimatedRegion, Alert} from 'react-native';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
@@ -35,7 +35,6 @@ class BoxPage extends Component{
         latitude:0,
         longitude:0,
       },
-      Showme: false,
     };
 
     //Setting up socket
@@ -52,7 +51,7 @@ class BoxPage extends Component{
     //On data receive
     this.socket.on('status', (data) => {
         console.log(data.msg);
-        if (data.msg == "Alert - Out of path" OR data.msg == "Alert - Out of designated area" )
+        if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area"))
         {
           Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
         }
@@ -158,9 +157,6 @@ class BoxPage extends Component{
       var temp = this.state.polygonArray.concat(e);
       this.setState({polygonArray: temp});
     }
-    modalFunction(){
-      this.setState({Showme: true})
-    }
 
 
 
@@ -197,26 +193,9 @@ class BoxPage extends Component{
       <TouchableOpacity style={styles.clearbttn} onPress={()=> this.clearFunction()}>
         <Text style={styles.cleartext}>X</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.startbttn} onPress={()=> this.modalFunction()}>
+      <TouchableOpacity style={styles.startbttn} onPress={()=> this.clearFunction()}>
         <Text style={styles.starttext}>Start</Text>
       </TouchableOpacity>
-      <Modal visible={this.state.Showme}
-              backdrop={true}
-              style={styles.modal}
-              transparent={true}>
-          <View style={styles.addPage}>
-          <Text style={styles.title}>Add Friend</Text>
-          <TouchableOpacity style={styles.FriendsTop}><Text style={styles.FriendsText}>John Wick</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Kieran Bondy</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Aaron Kaneti</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Bradley Ramos</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Can Turkay</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}>Ka Wong</Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
-          <TouchableOpacity style={styles.Friends}><Text style={styles.FriendsText}></Text></TouchableOpacity>
-          <TouchableOpacity style={styles.FriendsBottom}><Text style={styles.title}>Start Tracking</Text></TouchableOpacity>
-          </View>
-      </Modal>
       </View>
     );
   }
@@ -254,7 +233,7 @@ const styles = StyleSheet.create({
 
   },
   startbttn:{
-    marginTop: 600,
+    marginTop: 510,
     marginBottom: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -295,71 +274,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  addPage:{
-    backgroundColor: 'white',
-    marginTop: 175,
-    marginLeft: 75,
-    width: 230,
-    height: 400,
-    borderRadius: 25,
-    alignItems: 'center',
-    borderWidth: .25,
-    borderColor: 'black',
-    shadowColor: 'rgba(0,0,0, .9)', // IOS
-    shadowOffset: { height: 1, width: 1 }, // IOS
-    shadowOpacity: 1, // IOS
-    shadowRadius: 1,
-  },
-  modal:{
-    alignItems: 'center',
-    width:200,
-    height:400,
-    justifyContent: 'center',
-    borderRadius: Platform.OS === 'ios' ? 30:0,
-    shadowRadius: 10,
-  },
-  title: {
-    marginTop: 10,
-    textAlign: 'center',
-    fontFamily: 'Verdana',
-    color: '#BD9BF7',
-    fontSize: 20,
-    marginBottom: 5,
-    fontWeight: 'bold',
-  },
-  FriendsTop: {
-    width:230,
-    height: 40,
-    alignItems:'center',
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-    borderTopWidth: 1,
-    borderTopColor: 'gray',
-
-  },
-  Friends: {
-    width:230,
-    height: 40,
-    alignItems:'center',
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-
-  },
-  FriendsBottom: {
-    width:230,
-    height: 40,
-    alignItems:'center',
-    justifyContent: 'center',
-
-  },
-  FriendsText: {
-    textAlign: 'center',
-    fontFamily: 'Verdana',
-    color: '#BD9BF7',
-    fontSize: 20,
-  },
-
 });
 export default BoxPage;
