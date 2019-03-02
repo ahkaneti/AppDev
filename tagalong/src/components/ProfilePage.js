@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
+import { Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { MyContext } from '../redux/provider';
 
 type Props = {};
 
-class ProfilePage extends Component{
-  SignOutFunction(){
+class ProfilePage extends Component {
+  SignOutFunction() {
     this.props.navigation.navigate('CreateLoginPage');
   };
-  render(){
-    return(
+  render() {
+    return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.edit}><Image style={{width: 40, height: 40}} source={require('../../images/gear.png')}/></TouchableOpacity>
-        <Image style={styles.profile} source={require('../../images/Profileimg.png')}/>
+        <MyContext.Consumer>
+          {context => ((
+            <Text> Here is your token  {context.token} </Text>
+
+          ))}
+        </MyContext.Consumer>
+        <TouchableOpacity style={styles.edit}><Image style={{ width: 40, height: 40 }} source={require('../../images/gear.png')} /></TouchableOpacity>
+        <Image style={styles.profile} source={require('../../images/Profileimg.png')} />
         <Text style={styles.name}>John Wick</Text>
         <Text style={styles.email}>jwick@killer.com</Text>
         <Text style={styles.phone}>911-911-9110</Text>
-        <TouchableOpacity onPress = {()=>this.SignOutFunction()} style={styles.signOut}><Text style={styles.signOutText}>Sign Out</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => this.SignOutFunction()} style={styles.signOut}><Text style={styles.signOutText}>Sign Out</Text></TouchableOpacity>
       </View>
-      );
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -72,8 +79,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginRight: 7.5,
     marginTop: 37.5,
-    alignItems:'center',
-    justifyContent:'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 40,
     height: 40,
     backgroundColor: '#BD9BF7',

@@ -8,13 +8,14 @@
  */
 
 import React, { Component } from 'react';
-import {Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
+import { Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import { saveUserToken } from '../redux/actions';
-import { getUserToken } from '../redux/actions';
+import { MyContext } from '../redux/provider';
 
 type Props = {};
-class LoginPage extends Component{
-  constructor(props){
+class LoginPage extends Component {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -24,61 +25,86 @@ class LoginPage extends Component{
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.loginAsync = this.loginAsync.bind(this);
   };
 
-  LoginFunction(){
+  LoginFunction(saveToken) {
     console.log(this.state);
     return fetch('https://bradleyramos-login-boiler-plate-2.glitch.me/login', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password,
-        }),
-        }).then((response) => response.json())
-        .then((responseJson)=> {
-          console.log(responseJson);
-          //this.props.saveUserToken(responseJson.first_name);
-        })
-        .catch((error)=> {
-          console.error(error);
-        });
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: this.state.email,
+        password: this.state.password,
+      }),
+    }).then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson);
+        if (responseJson.token == undefined) {
+          console.log('true, display error now');
+          let errorStr = '';
+          for (let err of responseJson.errors) {
+            errorStr += `${err.message}\n`;
+          }
+          alert(errorStr);
+          return;
+        }
+        this.loginAsync(saveToken, responseJson.token);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-        // .then(function(response) => {
-        //   this.props.saveUserToken(response.json().token);
-        //   console.log(response.json().token);
-        //   console.log(this.props.getUserToken);
-        //   });
+    // .then(function(response) => {
+    //   this.props.saveUserToken(response.json().token);
+    //   console.log(response.json().token);
+    //   console.log(this.props.getUserToken);
+    //   });
   };
-  ForgotFunction(){
+  ForgotFunction() {
     this.props.navigation.navigate('ForgotPasswordPage');
   };
-  handleEmailChange(text){
-    this.setState({email: text});
+  handleEmailChange(text) {
+    this.setState({ email: text });
   };
 
-  handlePasswordChange(text){
-    this.setState({password: text});
+  handlePasswordChange(text) {
+    this.setState({ password: text });
+  };
+
+  loginAsync = async (saveToken, token) => {
+    saveToken(token)
+      .then(() => {
+        this.props.navigation.navigate('Tabs');
+      })
+      .catch(() => {
+        this.props.navigation.navigate('ForgotPasswordPage');
+      })
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.logo}>Login</Text>
-        <Text style={styles.headers}>Email</Text>
-        <TextInput style={styles.user_entry} onChangeText={this.handleEmailChange} value={this.state.email}/>
-        <Text style={styles.headers}>Password</Text>
-        <TextInput style={styles.password_entry} secureTextEntry={true} password={true} onChangeText={this.handlePasswordChange} value={this.state.password}/>
-        <TouchableOpacity style={styles.login_bttn} onPress={() => {
-          this.LoginFunction();
-          //this.props.navigation.navigate('Tabs');
-        }}>
-            <Text style={styles.bttn_text}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.ForgotFunction()}><Text style={styles.bttn_text}>Forgot Password</Text></TouchableOpacity>
+
+          <Text style={styles.logo}>Login</Text>
+          <Text style={styles.headers}>Email</Text>
+          <TextInput style={styles.user_entry} onChangeText={this.handleEmailChange} value={this.state.email} />
+          <Text style={styles.headers}>Password</Text>
+          <TextInput style={styles.password_entry} secureTextEntry={true} password={true} onChangeText={this.handlePasswordChange} value={this.state.password} />
+          <MyContext.Consumer>
+            {context => ((
+              <TouchableOpacity style={styles.login_bttn} onPress={() => {
+                this.LoginFunction(context.saveToken);
+                //this.props.navigation.navigate('Tabs');
+              }}>
+              <Text style={styles.bttn_text}>Login</Text>
+              </TouchableOpacity>
+            ))}
+          </MyContext.Consumer>
+          <TouchableOpacity onPress={() => this.ForgotFunction()}><Text style={styles.bttn_text}>Forgot Password</Text></TouchableOpacity>
       </View>
     );
   }
@@ -128,7 +154,7 @@ const styles = StyleSheet.create({
   },
   signup_link: {
     marginTop: 2,
-    fontSize:12,
+    fontSize: 12,
   },
   headers: {
     marginTop: 20,
