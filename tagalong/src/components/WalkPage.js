@@ -12,7 +12,8 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
 import SocketIOClient from 'socket.io-client';
-
+import PushNotification from 'react-native-push-notification';
+import PushController from './PushController';
 
 //API set up and variables
 type Props = {};
@@ -174,6 +175,12 @@ onPress2(arr,userPosition){
   started = true;
   pathArray = arr;
   changeDelta = false;
+  PushNotification.localNotificationSchedule({
+  //... You can use all the options from localNotifications
+  message: "My Notification Message", // (required)
+  date: new Date(Date.now() + (5 * 1000)) // in 60 secs
+  });
+
 }
 
 componentWillUnmount() {
@@ -230,7 +237,8 @@ componentWillUnmount() {
       <TouchableOpacity style={styles.startbttn} onPress={()=>this.onPress2(this.state.directionArray,this.state.userPosition)}>
         <Text style={styles.starttext}>Start</Text>
       </TouchableOpacity>
-    </View>
+      <PushController/>
+      </View>
     );
   }
 }
