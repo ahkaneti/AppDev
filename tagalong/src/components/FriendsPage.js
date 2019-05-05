@@ -8,7 +8,7 @@ class FriendsPage extends Component{
     super(props);
 
     this.state = {
-      text: 'Enter email users email'
+      text: 'Enter users phonenumber'
     }
   };
 
