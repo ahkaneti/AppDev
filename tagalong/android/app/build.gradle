@@ -134,7 +134,6 @@ android {
 }
 
 dependencies {
-    implementation project(':@mauron85_react-native-background-geolocation')
     implementation project(':react-native-push-notification')
     implementation project(':react-native-camera')
     implementation project(':react-native-geo-fencing')

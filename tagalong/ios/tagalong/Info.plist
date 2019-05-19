@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.14</string>
+	<string>0.11</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -40,13 +40,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Asking to use the camera</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need your location to keep your group updated</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need your location to keep your group updated</string>
+	<string>Please give</string>
 	<key>NSLocationUsageDescription</key>
-	<string>We need your location to keep your group updated</string>
+	<string>Please give</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to keep your group updated</string>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Please give</string>
 	<key>UILaunchStoryboardName</key>
