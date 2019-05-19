@@ -112,14 +112,16 @@ constructor(props){
     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleUB5YWhvbzExMjEyMi5jb20ifSwiaWF0IjoxNTUxMDY0MjU5fQ.RvupOADEiP9yw-3O0Iivbsq9R1qdx1mfT41BLuxIJhc"
   };
   this.socket.emit('shareUser', msg);
+
   //On data receive
   this.socket.on('status', (data) => {
       console.log(data.msg);
-      if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ) || (data.msg == "Alert - Out of web"))
+      if ((data.msg == global.OUT_OF_PATH_ALERT) || (data.msg == global.OUT_OF_WEB_ALERT) || (data.msg == global.OUT_OF_BOX_ALERT))
       {
         Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
       }
     });
+
   this.socket.on('newUser', (data) => {
       //web[data.first_name] = [data.latitude, data.longitude];
       console.log(data.first_name, web);
@@ -214,7 +216,7 @@ componentDidMount(){
           //Sending alert
           const message = {
             name: firstname,
-            msg: "Alert - Out of web",
+            msg: global.OUT_OF_WEB_ALERT,
             latitude: lat,
             longitude: long
           };

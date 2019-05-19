@@ -70,7 +70,7 @@ class BoxPage extends Component{
     //On data receive
     this.socket.on('status', (data) => {
         console.log(data.msg);
-        if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ) || (data.msg == "Alert - Out of web"))
+        if ((data.msg == global.OUT_OF_PATH_ALERT) || (data.msg == global.OUT_OF_WEB_ALERT) || (data.msg == global.OUT_OF_BOX_ALERT))
         {
           Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
         }
@@ -154,7 +154,7 @@ class BoxPage extends Component{
     //Sending alert
     const message = {
       name: firstname,
-      msg: "Alert - Out of designated area",
+      msg: global.OUT_OF_BOX_ALERT,
       latitude: lat,
       longitude: long
     };
