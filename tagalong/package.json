@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
+    "@mauron85/react-native-background-geolocation": "^0.5.3",
     "axios": "^0.18.0",
     "imagemin": "^6.1.0",
     "point-in-polygon": "^1.0.1",

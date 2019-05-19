@@ -12,7 +12,7 @@ import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import Geocoder from 'react-native-geocoder-reborn';
 import SocketIOClient from 'socket.io-client';
-
+import BackgroundGeolocation from '@mauron85/react-native-background-geolocation';
 
 
 //API set up and variables
@@ -133,6 +133,9 @@ componentDidMount(){
   //Requesting user authorization of location
   navigator.geolocation.requestAuthorization();
   //Getting the initial position
+
+
+
   navigator.geolocation.getCurrentPosition((position) => {
     //User current location
     var lat = position.coords.latitude

@@ -3,6 +3,7 @@ package com.tagalong;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.marianhello.bgloc.react.BackgroundGeolocationPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.surialabs.rn.geofencing.GeoFencingPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new BackgroundGeolocationPackage(),
             new ReactNativePushNotificationPackage(),
             new RNCameraPackage(),
             new GeoFencingPackage(),
