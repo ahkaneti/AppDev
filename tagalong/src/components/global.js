@@ -1,4 +1,4 @@
-global.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleXJhbW9zQHlhaG9vLmNvbSJ9LCJpYXQiOjE1NTcwODkyMTd9.A05Vu--fqIDHntR0QgcsreD0ootneyY6ERL3z8SzT5w';
+global.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiYnJhZGxleXJhbW9zQHlhaG9vLmNvbSJ9LCJpYXQiOjE1NTgyOTkyNDR9.6j3CckEEXiaIgmG5DEytdB06glxCJeuh5gq_J--cyN8';
 global.OUT_OF_PATH_ALERT = 'OUT_OF_PATH';
 global.OUT_OF_WEB_ALERT = 'OUT_OF_WEB';
 global.OUT_OF_BOX_ALERT = 'OUT_OF_BOX';

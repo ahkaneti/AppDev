@@ -8,7 +8,7 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, Text,  KeyboardAvoidingView , TextInput, Image, TouchableOpacity } from 'react-native';
 
 
 type Props = {};
@@ -93,7 +93,7 @@ class CreatePage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      < KeyboardAvoidingView  style={styles.container} behavior="padding">
         <Text style={styles.logo}>Create Account</Text>
         <Text style={styles.headers}>First Name</Text>
         <TextInput
@@ -130,7 +130,8 @@ class CreatePage extends Component {
           onChangeText={this.handlePasswordChange}
         />
         <TouchableOpacity style={styles.login_bttn} onPress={() => this.RegisterFunction()}><Text style={styles.bttn_text}>Create</Text></TouchableOpacity>
-      </View>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginPage')}><Text style={styles.bttn_text}>Already have an account?</Text></TouchableOpacity>
+      </ KeyboardAvoidingView >
     );
   }
 }
@@ -190,6 +191,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Verdana',
     color: 'white',
     fontSize: 15,
+    padding: 10,
   }
 });
 export default CreatePage;

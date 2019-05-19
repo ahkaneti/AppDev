@@ -8,7 +8,7 @@
  */
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, AsyncStorage, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, AsyncStorage, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { saveUserToken } from '../redux/actions';
 import { MyContext } from '../redux/provider';
@@ -89,7 +89,7 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
 
           <Text style={styles.logo}>Login</Text>
           <Text style={styles.headers}>Email</Text>
@@ -100,14 +100,15 @@ class LoginPage extends Component {
             {context => ((
               <TouchableOpacity style={styles.login_bttn} onPress={() => {
                 this.LoginFunction(context.saveToken);
-                //this.props.navigation.navigate('Tabs');
+                this.props.navigation.navigate('Tabs');
               }}>
               <Text style={styles.bttn_text}>Login</Text>
               </TouchableOpacity>
             ))}
           </MyContext.Consumer>
-          <TouchableOpacity onPress={() => this.ForgotFunction()}><Text style={styles.bttn_text}>Forgot Password</Text></TouchableOpacity>
-      </View>
+          <TouchableOpacity onPress={() => this.ForgotFunction()}><Text style={styles.bttn_text}>Forgot your password?</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => this.props.navigation.navigate('CreatePage')}><Text style={styles.bttn_text}>{"Don't have an account?"}</Text></TouchableOpacity>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -169,6 +170,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Verdana',
     color: 'white',
     fontSize: 15,
+    padding:10,
   }
 });
 

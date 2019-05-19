@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View, TextInput, Image, TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, KeyboardAvoidingView, TextInput, Image, TouchableOpacity} from 'react-native';
 
 type Props = {};
 
@@ -42,7 +42,7 @@ class ForgotPasswordPage extends Component{
     let emailText = this.state.emailText;
     let passwordText = this.state.passwordText;
     return(
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
         <TouchableOpacity style={styles.back} onPress={()=>this.BackFunction()}>
         <Image source={require('../../images/back.png')} style={{width: 32.5, height: 22.5,}}/>
         </TouchableOpacity>
@@ -64,7 +64,8 @@ class ForgotPasswordPage extends Component{
         <TouchableOpacity style={styles.enter_bttn} onPress={()=>this.ChangePasswordFunction()}>
           <Text style={styles.bttn_text}>Enter</Text>
         </TouchableOpacity>
-      </View>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('LoginPage')}><Text style={styles.bttn_text}>Go back to login</Text></TouchableOpacity>
+      </KeyboardAvoidingView>
       );
   }
 }
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Verdana',
     color: 'white',
     fontSize: 15,
+    padding:10,
   },
   back: {
     width: 50,
