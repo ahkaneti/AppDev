@@ -75,13 +75,13 @@ constructor(props){
   this.socket.emit('shareUser', msg);
 
   //On data receive
-  this.socket.on('status', (data) => {
-      console.log(data.msg);
-      if ((data.msg == "Alert - Out of path") || (data.msg == "Alert - Out of designated area" ) || (data.msg == "Alert - Out of web"))
-      {
-        Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
-      }
-    });
+    this.socket.on('status', (data) => {
+        console.log(data.msg);
+        if ((data.msg == global.OUT_OF_PATH_ALERT) || (data.msg == global.OUT_OF_WEB_ALERT) || (data.msg == global.OUT_OF_BOX_ALERT))
+        {
+          Alert.alert("Alert", data.name + " " + data.msg + "\nlatitude: " + data.latitude + "\nlongitude: " + data.longitude);
+        }
+      });
 }
 
 watchID = null
@@ -129,7 +129,7 @@ componentDidMount(){
           //Sending alert
           const message = {
             name: firstname,
-            msg: "Alert - Out of path",
+            msg: global.OUT_OF_PATH_ALERT,
             latitude: lat,
             longitude: long
           };
